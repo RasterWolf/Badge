@@ -1,5 +1,6 @@
 #include "RenderTarget.h"
 #include "MyGL.h"
+#include "RenderPasses.h"
 
 RenderTarget::RenderTarget(int SizeX, int SizeY)
 {
@@ -20,7 +21,7 @@ RenderTarget::RenderTarget(int SizeX, int SizeY)
 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, ShaderResourceId, 0);
 
-	GlCheckError();
+	GRenderPasses->CheckForError();
 
 }
 

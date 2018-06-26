@@ -13,9 +13,9 @@ BasicBadge::BasicBadge(const std::string backgroundImage)
 	BackgroundTexture = TextureManager::GetTexture(backgroundImage.c_str());
 }
 
-void BasicBadge::DoYourThing(float delta)
+void BasicBadge::Render(float delta)
 {
-	RenderPasses::GetRenderPasses().RenderFullScreen(BackgroundTexture);
+	GRenderPasses->RenderFullScreen(BackgroundTexture);
 }
 
 void TempImageActor::Init(const glm::vec2& pos)
@@ -66,10 +66,10 @@ void RasterBadge::HandleClick(int x, int y)
 	//special if there isn't a boop actor ?
 }
 
-void RasterBadge::DoYourThing(float delta)
+void RasterBadge::Render(float delta)
 {
-	RenderPasses::GetRenderPasses().RenderFullScreen(BadgeFrames[tiComponent.HasActors()?1:0]);
-	tiComponent.DoYourThing(delta);
+	GRenderPasses->RenderFullScreen(BadgeFrames[tiComponent.HasActors()?1:0]);
+	tiComponent.Render(delta);
 }
 
 bool RasterBadge::Integrate(float delta) 
@@ -116,10 +116,10 @@ void PulexBadge::HandleClick(int x, int y)
 	//special if there isn't a boop actor ?
 }
 
-void PulexBadge::DoYourThing(float delta)
+void PulexBadge::Render(float delta)
 {
-	RenderPasses::GetRenderPasses().RenderFullScreen(Background);
-	tiComponent.DoYourThing(delta);
+	GRenderPasses->RenderFullScreen(Background);
+	tiComponent.Render(delta);
 }
 
 bool PulexBadge::Integrate(float delta)
@@ -137,5 +137,5 @@ void HeartActor::Render()
 	trans = glm::scale(trans, glm::vec3(Image.Width*0.5f, Image.Height*0.5f, 1.0f)); //0.5 because the unit cube is -1 to 1
 	trans = glm::scale(trans, glm::vec3(Scale, Scale, 1.0f));
 	trans = glm::scale(trans, glm::vec3(SCALE, SCALE, 1.0f));
-	RenderPasses::GetRenderPasses().RenderImageBox(Image, trans, true, color);
+	GRenderPasses->RenderImageBox(Image, trans, true, color);
 }

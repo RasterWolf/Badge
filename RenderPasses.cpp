@@ -7,6 +7,7 @@
 #include "Constant.h"
 
 
+RenderPasses* GRenderPasses = nullptr;
 
 void RenderPasses::RenderFullScreen(const BadgeImage& Texture)
 {
@@ -17,7 +18,7 @@ void RenderPasses::RenderFullScreen(unsigned int Texture)
 {
 	ShaderPrograms::SetProgram(SP_FullScreen);
 	glBindTexture(GL_TEXTURE_2D, Texture);
-	UnitCube.Draw();
+	UnitCube->Draw();
 }
 
 void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& ObjectMatrix, bool EnableAlpha, const glm::vec3& colorMod)
@@ -43,14 +44,14 @@ void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& Ob
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-#if defined(DEBUG)
+#if 0
 	glm::mat4 mvp = ViewProjection * ObjectMatrix;
 	glm::vec4 p1 = mvp * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
 	glm::vec4 p2 = mvp * glm::vec4(1.0f, -1.0f, 0.0f, 1.0f);
 	glm::vec4 p3 = mvp * glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
 	glm::vec4 p4 = mvp * glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f);
 #endif 
-	UnitCube.Draw();
+	UnitCube->Draw();
 
 	if(EnableAlpha)
 	{
@@ -58,3 +59,60 @@ void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& Ob
 	}
 
 }
+
+void RenderPasses::CheckForError()
+{
+	GLenum err = glGetError();
+	if (err != GL_NO_ERROR)
+	{
+		std::cout << "GL Error: " << gluErrorString(err) << std::endl;
+	}
+}
+#if USE_GLEW
+void RenderPasses::InitGL(int* argc, char *argv[])
+{
+	int win;
+
+	glutInit(argc, argv);
+
+	glutInitDisplayMode(GLUT_RGB);
+	glutInitWindowSize(SIZE_X, SIZE_Y);
+	win = glutCreateWindow("RasterBadge");
+
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+	}
+
+	glDisable(GL_DEPTH_TEST);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	gluOrtho2D(0, SIZE_X, 0, SIZE_Y);
+	glViewport(0, 0, SIZE_X, SIZE_Y);
+
+	std::cout << glGetString(GL_RENDERER) << std::endl;
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
+	UnitCube = new UnitCubeGeo();
+
+}
+
+void RenderPasses::DestroyGL()
+{
+	if (UnitCube)
+		delete UnitCube;
+}
+#else //EGL
+void RenderPasses::InitGL()
+{
+
+
+}
+
+void RenderPasses::DestroyGL()
+{
+}
+#endif
+
+

@@ -6,17 +6,14 @@
 class RenderPasses
 {
 public:
-		
 	void RenderFullScreen(const BadgeImage& Texture);
 	void RenderFullScreen(unsigned int Texture);
 	void RenderImageBox(const BadgeImage& Texture , const glm::mat4& ObjectMatrix, bool EnableAlpha = false, const glm::vec3& colorMod = glm::vec3(1.0f));
-
-	static RenderPasses& GetRenderPasses()
-	{
-		static RenderPasses rp;
-		return rp;
-	}
-
+	void InitGL(int* argc, char *argv[]);
+	void DestroyGL();
+	void CheckForError();
 private:
-	UnitCubeGeo UnitCube;
+	UnitCubeGeo * UnitCube = nullptr;
 };
+
+extern RenderPasses* GRenderPasses;

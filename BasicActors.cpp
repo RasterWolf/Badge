@@ -22,5 +22,5 @@ void ImageActor::Render()
 	trans = glm::scale(trans, glm::vec3(Image.Width*0.5f, Image.Height*0.5f, 1.0f)); //0.5 because the unit cube is -1 to 1
 	trans = glm::scale(trans, glm::vec3(Scale,Scale,1.0f));
 	trans = glm::scale(trans, glm::vec3(SCALE,SCALE,1.0f));
-	RenderPasses::GetRenderPasses().RenderImageBox(Image,trans,true);
+	GRenderPasses->RenderImageBox(Image,trans,true);
 }

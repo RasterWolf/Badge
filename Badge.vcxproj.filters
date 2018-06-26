@@ -15,86 +15,83 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\BadgePrograms.cpp">
+    <ClCompile Include="BadgeEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\BasicActors.cpp">
+    <ClCompile Include="BadgePrograms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\glutFunctions.cpp">
+    <ClCompile Include="BasicActors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\RenderPasses.cpp">
+    <ClCompile Include="RenderPasses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shaders.cpp">
+    <ClCompile Include="RenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\StaticGeo.cpp">
+    <ClCompile Include="Shaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\TextureManager.cpp">
+    <ClCompile Include="StaticGeo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\RenderTarget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BadgeEngine.cpp">
+    <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\BadgePrograms.h">
+    <ClInclude Include="BadgeEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\BasicActors.h">
+    <ClInclude Include="BadgePrograms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Constant.h">
+    <ClInclude Include="BasicActors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Math.h">
+    <ClInclude Include="Constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\MyGL.h">
+    <ClInclude Include="Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\RenderPasses.h">
+    <ClInclude Include="RenderPasses.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shaders.h">
+    <ClInclude Include="RenderTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\StaticGeo.h">
+    <ClInclude Include="Shaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\TextureManager.h">
+    <ClInclude Include="StaticGeo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\RenderTarget.h">
+    <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\BadgeEngine.h">
+    <ClInclude Include="MyGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\FullScreenFS.glsl">
+    <None Include="SConstruct">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\FullScreenVS.glsl">
+    <None Include="FullScreenFS.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\ImageBoxFS.glsl">
+    <None Include="FullScreenVS.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\ImageBoxVS.glsl">
+    <None Include="ImageBoxFS.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\SConstruct">
+    <None Include="ImageBoxVS.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

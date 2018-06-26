@@ -10,7 +10,7 @@ class BadgeProgram
 public:
 	virtual void HandleClick(int x, int y) { ; }
 	virtual void HandleKeyPress(unsigned char key) {;}
-	virtual void DoYourThing(float delta)=0;
+	virtual void Render(float delta)=0;
 	virtual bool Integrate(float delta){ return false;}
 };
 
@@ -23,7 +23,7 @@ public:
 	{ 
 		return BadgeProgram::Integrate(delta);
 	}
-	void DoYourThing(float delta) override;
+	void Render(float delta) override;
 private:
 	BadgeImage BackgroundTexture;
 };
@@ -50,7 +50,7 @@ public:
 	{
 		;
 	}
-	void DoYourThing(float delta)
+	void Render(float delta)
 	{
 		for (auto& bp : SpawnedActors)
 		{
@@ -134,7 +134,7 @@ public:
 	}
 	~RasterBadge(){;}
 	void HandleClick(int x, int y) override;
-	void DoYourThing(float delta) override;
+	void Render(float delta) override;
 	bool Integrate(float delta) override;
 private:
 	static glm::vec2 NoseMin;
@@ -170,7 +170,7 @@ public:
 	}
 	~PulexBadge() { ; }
 	void HandleClick(int x, int y) override;
-	void DoYourThing(float delta) override;
+	void Render(float delta) override;
 	bool Integrate(float delta) override;
 private:
 	static glm::vec2 HeartMin;
