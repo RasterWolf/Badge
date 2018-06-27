@@ -209,14 +209,14 @@ int RasterProgram::UpdateInvisibleButtonClick(int x, int y)
 	glm::ivec4 iSelect(0);
 	int ButtonIndex = -1;
 
-	glm::ivec4 ButtonLocations[] = { glm::ivec4(0,0,ButtonSize,ButtonSize),
+	const glm::ivec4 ButtonLocations[] = { glm::ivec4(0,0,ButtonSize,ButtonSize),
 									glm::ivec4(XLimit,0,SIZE_X,ButtonSize),
 									glm::ivec4(0,YLimit,ButtonSize,SIZE_Y), 
 									glm::ivec4(XLimit,YLimit,SIZE_X,SIZE_Y) };
 
 	for (int i = 0; i < sizeof(ButtonLocations) / sizeof(ButtonLocations[0]); i++)
 	{
-		glm::ivec4& item = ButtonLocations[i];
+		const glm::ivec4& item = ButtonLocations[i];
 		if ((x >= item.x && x <= item.z) && 
 			(y >= item.y && y <= item.w))
 		{
