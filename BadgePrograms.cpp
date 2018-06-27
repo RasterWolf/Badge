@@ -29,7 +29,7 @@ bool TempImageActor::Integrate(float tick)
 {
 	TimeSinceStart += tick;
 
-	if (TimeSinceStart >= 10000.0f)
+	if (TimeSinceStart >= 5000.f)
 	{
 		bEnabled = false;
 		return true;
@@ -127,15 +127,112 @@ bool PulexBadge::Integrate(float delta)
 	return tiComponent.Integrate(delta);
 }
 
-
 void HeartActor::Render()
 {
-	glm::mat4 trans = glm::mat4(1.0f);
+	GRenderPasses->RenderImageBox(Image, ApplyTransform(), true, color);
+}
 
-	trans = glm::translate(trans, glm::vec3(Position.x, Position.y, 0.0f));
-	trans = glm::rotate(trans, Rotation, glm::vec3(0, 0, 1));
-	trans = glm::scale(trans, glm::vec3(Image.Width*0.5f, Image.Height*0.5f, 1.0f)); //0.5 because the unit cube is -1 to 1
-	trans = glm::scale(trans, glm::vec3(Scale, Scale, 1.0f));
-	trans = glm::scale(trans, glm::vec3(SCALE, SCALE, 1.0f));
-	GRenderPasses->RenderImageBox(Image, trans, true, color);
+//Main Badge Program
+
+RasterProgram::RasterProgram()
+{
+	bForceNextFrameRender = false;
+
+	//Programs
+	AllBadgePrograms.push_back(new RasterBadge());
+	AllBadgePrograms.push_back(new PulexBadge());
+	AllBadgePrograms.push_back(new BasicBadge("KBadge.png"));
+	CurrentProgramIndex = 0;
+	CurrentProgram = AllBadgePrograms[0];
+}
+
+RasterProgram::~RasterProgram()
+{
+	for(auto* item : AllBadgePrograms)
+		delete item;
+	AllBadgePrograms.empty();
+}
+
+void RasterProgram::HandleClick(int x, int y)
+{
+	int i = UpdateInvisibleButtonClick(x,y);
+	if (i != -1)
+	{
+		switch (i)
+		{
+		case 0:
+			PreviousProgram();
+			break;
+		case 1:
+			AdvanceProgram();
+			break;
+		case 2:
+			PreviousProgram();
+			break;
+		case 3:
+			AdvanceProgram();
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		CurrentProgram->HandleClick(x, y);
+	}
+}
+
+void RasterProgram::HandleKeyPress(unsigned char key) 
+{ 
+	CurrentProgram->HandleKeyPress(key); 
+}
+
+void RasterProgram::Render(float delta)
+{
+	CurrentProgram->Render(delta);
+}
+
+bool RasterProgram::Integrate(float delta) 
+{ 
+	bool tmp = bForceNextFrameRender;
+	bForceNextFrameRender = false;
+	return CurrentProgram->Integrate(delta) || tmp;
+}
+
+int RasterProgram::UpdateInvisibleButtonClick(int x, int y)
+{
+	const int ButtonSize = int(14*SCALE);
+	const int NumClicks = 4;
+	const int XLimit = SIZE_X - ButtonSize;
+	const int YLimit = SIZE_Y - ButtonSize;
+	
+	glm::ivec4 iSelect(0);
+	int ButtonIndex = -1;
+
+	glm::ivec4 ButtonLocations[] = { glm::ivec4(0,0,ButtonSize,ButtonSize),
+									glm::ivec4(XLimit,0,SIZE_X,ButtonSize),
+									glm::ivec4(0,YLimit,ButtonSize,SIZE_Y), 
+									glm::ivec4(XLimit,YLimit,SIZE_X,SIZE_Y) };
+
+	for (int i = 0; i < sizeof(ButtonLocations) / sizeof(ButtonLocations[0]); i++)
+	{
+		glm::ivec4& item = ButtonLocations[i];
+		if ((x >= item.x && x <= item.z) && 
+			(y >= item.y && y <= item.w))
+		{
+			iSelect[i] = ButtonClickCount[i]+1;
+			ButtonIndex = i;
+			break;
+		}
+	}
+
+	ButtonClickCount = iSelect;
+
+	if (ButtonIndex != -1 && ButtonClickCount[ButtonIndex] >= NumClicks)
+	{
+		ButtonClickCount[ButtonIndex] = 0;
+		return  ButtonIndex;
+	}
+	
+	return -1;
 }

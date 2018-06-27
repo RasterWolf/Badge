@@ -9,11 +9,9 @@ int main(int argc, char *argv[])
 {
 	GEngine.Initialize(&argc,argv);
 
-	RasterBadge rb;
-	PulexBadge pb;
-	GEngine.SetBadgeProgram(&rb);
+	RasterProgram rp;
+	GEngine.SetBadgeProgram(&rp);
 	GEngine.MainLoop();
 	GEngine.Shutdown();
-
 	return 0;
 }

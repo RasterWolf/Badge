@@ -17,6 +17,7 @@ public:
 	glm::vec2 Position;
 	float Rotation;
 	float Scale;
+	virtual glm::mat4 ApplyTransform() const;
 };
 
 class MovingActor : public Actor
@@ -38,5 +39,6 @@ class ImageActor : public MovingActor
 public:
 	ImageActor(const std::string& image);
 	virtual void Render();
+	virtual glm::mat4 ApplyTransform() const override;
 	BadgeImage Image;
 };

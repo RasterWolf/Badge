@@ -4,10 +4,12 @@
 #include "BasicActors.h"
 #include "Math.h"
 #include <list>
+#include <vector>
 
 class BadgeProgram
 {
 public:
+	virtual ~BadgeProgram() { ; }
 	virtual void HandleClick(int x, int y) { ; }
 	virtual void HandleKeyPress(unsigned char key) {;}
 	virtual void Render(float delta)=0;
@@ -177,4 +179,48 @@ private:
 	static glm::vec2 HeartSize;
 	BadgeImage Background;
 	TempImageComponent<HeartActor> tiComponent;
+};
+
+
+//Uber program that cotains the hidden buttons and cycles post effects / other badge programs
+class RasterProgram : public BadgeProgram
+{
+public:
+	RasterProgram();
+	~RasterProgram();
+
+	virtual void HandleClick(int x, int y) override;
+	virtual void HandleKeyPress(unsigned char key) override;
+	virtual void Render(float delta) override;
+	virtual bool Integrate(float delta) override;
+
+	//Invisible Button Mapping
+	glm::ivec4 ButtonClickCount;
+
+	//Badge Programs
+	std::vector<BadgeProgram*> AllBadgePrograms;
+	int CurrentProgramIndex;
+	BadgeProgram* CurrentProgram;
+	void AdvanceProgram()
+	{
+		CurrentProgramIndex += 1;
+		if (CurrentProgramIndex >= (int)AllBadgePrograms.size())
+			CurrentProgramIndex = 0;
+		CurrentProgram = AllBadgePrograms[CurrentProgramIndex];
+		bForceNextFrameRender = true;
+	}
+
+	void PreviousProgram()
+	{
+		CurrentProgramIndex -= 1;
+		if (CurrentProgramIndex < 0 )
+			CurrentProgramIndex = AllBadgePrograms.size() -1;
+		CurrentProgram = AllBadgePrograms[CurrentProgramIndex];
+		bForceNextFrameRender = true;
+	}
+
+protected:
+	bool bForceNextFrameRender;
+
+	int UpdateInvisibleButtonClick(int x, int y);
 };

@@ -133,7 +133,7 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 	bool draw = bForceDraw;
 	if (RunningProgram)
 	{
-		draw = LastRenderTime == 0;
+		draw = LastRenderTime == 0 || ((Start - LastRenderTime) > (2 * 60 * 1000)); //Refresh every 2 min (this should keep the screen on)
 		draw |= RunningProgram->Integrate(TickTime);
 		if (draw)
 		{
@@ -154,9 +154,6 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 
 			glClear(GL_COLOR_BUFFER_BIT);
 #endif
-			//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			//GRenderPasses->RenderFullScreen(rt.ShaderResourceId);
-
 			LastRenderTime = Start;
 		}
 
