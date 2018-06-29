@@ -6,6 +6,7 @@
 #include "MyGL.h"
 #include "Shaders.h"
 #include "TextureManager.h"
+#include "Constant.h"
 
 
 BadgeEngine GEngine;
@@ -49,6 +50,12 @@ void KeyEnter(unsigned char key, int x, int y)
 {
 	GEngine.HandleKeyPress(key,x,y);
 }
+#else
+
+SDL_Window *window;
+int width;
+int height;
+
 #endif
 
 void BadgeEngine::Initialize(int* argc, char *argv[])
@@ -70,7 +77,24 @@ void BadgeEngine::Initialize(int* argc, char *argv[])
 	GUnitCube = new UnitCubeGeo();
 
 	srand(time(nullptr));
+
+#if !USE_GLUT
+	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
+
+	window = SDL_CreateWindow(
+		"RasterBadge",					   // window title
+		SDL_WINDOWPOS_UNDEFINED,           // initial x position
+		SDL_WINDOWPOS_UNDEFINED,           // initial y position
+		0,                               // width, in pixels
+		0,                               // height, in pixels
+		SDL_WINDOW_FULLSCREEN_DESKTOP| SDL_WINDOW_BORDERLESS                 // flags - see below
+	);
+
+	SDL_GetWindowSize(window, &width, &height);
+	
+#else
 	SDL_Init(SDL_INIT_TIMER);
+#endif
 
 	bIsInitialized = true;
 }
@@ -82,7 +106,6 @@ void BadgeEngine::Shutdown()
 		ShaderPrograms::DeleteShaderPrograms();
 		TextureManager::DeleteTextureManager();
 		delete GUnitCube;
-		SDL_Quit();
 		
 		GRenderPasses->DestroyGL();
 		delete GRenderPasses;
@@ -90,6 +113,10 @@ void BadgeEngine::Shutdown()
 		RunningProgram = nullptr;
 		
 		bIsInitialized = false;
+#if !USE_GLUT
+		SDL_DestroyWindow(window);
+#endif
+		SDL_Quit();
 
 		exit(0);
 	}
@@ -99,14 +126,49 @@ void BadgeEngine::Shutdown()
 void BadgeEngine::MainLoop()
 {
 	assert(bIsInitialized);
-	
+
 #if USE_GLUT
 	glutMainLoop();
 #else
-	while(true)
+	while (true)
 	{
-		InnerMainLoop(true);
-		GRenderPasses->SwapBuffers();
+		SDL_Event event;
+
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_MOUSEBUTTONUP)
+			{
+				float fx = event.button.x / (float)width;
+				float fy = event.button.y / (float)height;
+				int x = int(fx*SIZE_X);
+				int y = int(fy*SIZE_Y);
+				std::cout << "mouse clicked: " << x << "x" << y << std::endl;
+				HandleLeftClick(x, y);
+			}
+
+			if (event.type == SDL_KEYDOWN && event.key.state == SDL_PRESSED && event.key.repeat == 0)
+			{
+				unsigned char c = tolower(SDL_GetKeyName(event.key.keysym.sym)[0]);
+				std::cout << "pressing key: " << c << std::endl;
+				HandleKeyPress(c, 0, 0);
+			}
+
+			if (event.type == SDL_QUIT)
+			{
+				return;
+			}
+		
+		}
+
+		if (!bIsInitialized)
+		{
+			return;
+		}
+
+		if (InnerMainLoop(false))
+		{
+			GRenderPasses->SwapBuffers();
+		}
 	}
 #endif
 }
