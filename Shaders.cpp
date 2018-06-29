@@ -29,11 +29,13 @@ void ShaderPrograms::InitShaderPrograms()
 		glLinkProgram(shaderProgram);
 
 
-		int  success;
-		char infoLog[512];
-		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-		if(!success) {
-		    glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		//int  success = 1;
+		char infoLog[512] = { 0 };
+		//glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+		//if(!success) 
+		{
+			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+			if(infoLog[0])
 			std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
 		    
 		}

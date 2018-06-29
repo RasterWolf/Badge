@@ -40,11 +40,11 @@ public:
 			int32_t size = file.tellg();
 			file.seekg(0,file.beg);
 
-			char* glsl = (char*)malloc(size);
+			GLchar* glsl = (GLchar*)malloc(size);
 			file.read(glsl, size);
 			file.close();
 
-			glShaderSource(shader,1,&glsl,&size);
+			glShaderSource(shader,1,(const GLchar**)&glsl,&size);
 			glCompileShader(shader);
 
 			int  success;

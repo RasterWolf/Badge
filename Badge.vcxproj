@@ -178,6 +178,7 @@
     <None Include="FullScreenVS.glsl" />
     <None Include="ImageBoxFS.glsl" />
     <None Include="ImageBoxVS.glsl" />
+    <None Include="Makefile" />
     <None Include="SConstruct" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

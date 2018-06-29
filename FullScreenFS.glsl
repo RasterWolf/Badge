@@ -1,5 +1,5 @@
-#version 100
-precision mediump float;
+//#version 100
+//precision mediump float;
 varying vec2 TexCoord;
 
 uniform sampler2D ourTexture;

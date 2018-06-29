@@ -65,9 +65,10 @@ void RenderPasses::CheckForError()
 	GLenum err = glGetError();
 	if (err != GL_NO_ERROR)
 	{
-		std::cout << "GL Error: " << gluErrorString(err) << std::endl;
+		std::cout << "GL Error: " << err << std::endl;
 	}
 }
+
 #if USE_GLEW
 void RenderPasses::InitGL(int* argc, char *argv[])
 {
@@ -103,11 +104,128 @@ void RenderPasses::DestroyGL()
 	if (UnitCube)
 		delete UnitCube;
 }
-#else //EGL
-void RenderPasses::InitGL()
+void RenderPasses::SwapBuffers()
 {
+}
+#else //EGL
+
+typedef struct
+{
+	uint32_t screen_width;
+	uint32_t screen_height;
+	// OpenGL|ES objects
+	DISPMANX_DISPLAY_HANDLE_T dispman_display;
+	DISPMANX_ELEMENT_HANDLE_T dispman_element;
+	EGLDisplay display;
+	EGLSurface surface;
+	EGLContext context;
+	
+} GL_CONTEXT;
+
+GL_CONTEXT glContext;
+
+void RenderPasses::InitGL(int* argc, char *argv[])
+{
+	bcm_host_init();
+	int32_t success = 0;
+	EGLBoolean result;
+	EGLint num_config;
+
+	static EGL_DISPMANX_WINDOW_T nativewindow;
+
+	DISPMANX_UPDATE_HANDLE_T dispman_update;
+	VC_RECT_T dst_rect;
+	VC_RECT_T src_rect;
+
+	static const EGLint attribute_list[] =
+	{
+		EGL_RED_SIZE, 8,
+		EGL_GREEN_SIZE, 8,
+		EGL_BLUE_SIZE, 8,
+		EGL_ALPHA_SIZE, 8,
+		EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+		EGL_NONE
+	};
+
+	EGLConfig config;
+
+	// get an EGL display connection
+	glContext.display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+	assert(glContext.display != EGL_NO_DISPLAY);
+
+	// initialize the EGL display connection
+	result = eglInitialize(glContext.display, NULL, NULL);
+	assert(EGL_FALSE != result);
+
+	// get an appropriate EGL frame buffer configuration
+	result = eglChooseConfig(glContext.display, attribute_list, &config, 1, &num_config);
+	assert(EGL_FALSE != result);
+
+	// create an EGL rendering context
+	glContext.context = eglCreateContext(glContext.display, config, EGL_NO_CONTEXT, NULL);
+	assert(glContext.context != EGL_NO_CONTEXT);
+
+	// create an EGL window surface
+	success = graphics_get_display_size(0 /* LCD */, &glContext.screen_width, &glContext.screen_height);
+	assert(success >= 0);
+
+	dst_rect.x = 0;
+	dst_rect.y = 0;
+	dst_rect.width = glContext.screen_width;
+	dst_rect.height = glContext.screen_height;
+
+	src_rect.x = 0;
+	src_rect.y = 0;
+	src_rect.width = glContext.screen_width << 16;
+	src_rect.height = glContext.screen_height << 16;
+
+	glContext.dispman_display = vc_dispmanx_display_open(0 /* LCD */);
+	dispman_update = vc_dispmanx_update_start(0);
+
+	glContext.dispman_element = vc_dispmanx_element_add(dispman_update, glContext.dispman_display,
+		0/*layer*/, &dst_rect, 0/*src*/,
+		&src_rect, DISPMANX_PROTECTION_NONE, 0 /*alpha*/, 0/*clamp*/, DISPMANX_NO_ROTATE /*transform*/);
+
+	nativewindow.element = glContext.dispman_element;
+	nativewindow.width = glContext.screen_width;
+	nativewindow.height = glContext.screen_height;
+	vc_dispmanx_update_submit_sync(dispman_update);
+
+	glContext.surface = eglCreateWindowSurface(glContext.display, config, &nativewindow, NULL);
+	assert(glContext.surface != EGL_NO_SURFACE);
+
+	// connect the context to the surface
+	result = eglMakeCurrent(glContext.display, glContext.surface, glContext.surface, glContext.context);
+	assert(EGL_FALSE != result);
+
+	// Set background color and clear buffers
+	glClearColor(0.15f, 0.25f, 0.35f, 1.0f);
+
+	// Enable back face culling.
+	glEnable(GL_CULL_FACE);
+
+	//glMatrixMode(GL_MODELVIEW);
+
+	glDisable(GL_DEPTH_TEST);
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glViewport(0, 0, glContext.screen_width, glContext.screen_height);
 
 
+	std::cout << glGetString(GL_RENDERER) << std::endl;
+	std::cout << glGetString(GL_VERSION) << std::endl;
+	std::cout << "Screen Resolution " << glContext.screen_width << "x" << glContext.screen_height << std::endl;
+
+	UnitCube = new UnitCubeGeo();
+
+}
+
+void RenderPasses::SwapBuffers()
+{
+	glFlush();
+	glFinish();
+
+	eglSwapBuffers(glContext.display, glContext.surface);
 }
 
 void RenderPasses::DestroyGL()

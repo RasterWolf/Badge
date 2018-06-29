@@ -1,4 +1,4 @@
-#version 100
+//#version 100
 //in int gl_VertexID;
 
 attribute vec3 aPos;

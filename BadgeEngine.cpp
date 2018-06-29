@@ -9,7 +9,7 @@
 
 
 BadgeEngine GEngine;
-
+#if USE_GLUT
 void MouseClick(int button, int state, int x, int y)
 {
 	std::cout << button << " " << state << " " << x << " " << y << std::endl;
@@ -49,19 +49,21 @@ void KeyEnter(unsigned char key, int x, int y)
 {
 	GEngine.HandleKeyPress(key,x,y);
 }
+#endif
 
 void BadgeEngine::Initialize(int* argc, char *argv[])
 {
 	GRenderPasses = new RenderPasses();
 	GRenderPasses->InitGL(argc, argv);
 
+#if USE_GLUT
 	glutDisplayFunc(gluRender);
 	glutIdleFunc(glutIdle);
 
 	//input
 	glutKeyboardFunc(KeyEnter);
 	glutMouseFunc(MouseClick); //Only care about left click
-
+#endif
 
 	ShaderPrograms::InitShaderPrograms();
 	TextureManager::InitTextureManager();
@@ -95,9 +97,15 @@ void BadgeEngine::Shutdown()
 void BadgeEngine::MainLoop()
 {
 	assert(bIsInitialized);
-
-#if USE_GLEW
+	
+#if USE_GLUT
 	glutMainLoop();
+#else
+	while(true)
+	{
+		InnerMainLoop(true);
+		GRenderPasses->SwapBuffers();
+	}
 #endif
 }
 
@@ -131,9 +139,10 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 {
 	unsigned int Start = SDL_GetTicks();
 	bool draw = bForceDraw;
+	
 	if (RunningProgram)
 	{
-		draw = LastRenderTime == 0 || ((Start - LastRenderTime) > (2 * 60 * 1000)); //Refresh every 2 min (this should keep the screen on)
+		draw |= LastRenderTime == 0 || ((Start - LastRenderTime) > (2 * 60 * 1000)); //Refresh every 2 min (this should keep the screen on)
 		draw |= RunningProgram->Integrate(TickTime);
 		if (draw)
 		{
@@ -151,7 +160,7 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 				glClearColor(0, 0, 1, 1);
 
 			i++;
-
+			
 			glClear(GL_COLOR_BUFFER_BIT);
 #endif
 			LastRenderTime = Start;

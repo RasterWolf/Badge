@@ -12,6 +12,7 @@ public:
 	void InitGL(int* argc, char *argv[]);
 	void DestroyGL();
 	void CheckForError();
+	void SwapBuffers();
 private:
 	UnitCubeGeo * UnitCube = nullptr;
 };
