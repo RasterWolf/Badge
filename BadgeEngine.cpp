@@ -144,6 +144,7 @@ void BadgeEngine::MainLoop()
 				int y = int(fy*SIZE_Y);
 				std::cout << "mouse clicked: " << x << "x" << y << std::endl;
 				HandleLeftClick(x, y);
+				//HandleLeftClick(48, 222);
 			}
 
 			if (event.type == SDL_KEYDOWN && event.key.state == SDL_PRESSED && event.key.repeat == 0)
@@ -212,6 +213,7 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 		if (draw)
 		{
 #if 1
+			glClear(GL_COLOR_BUFFER_BIT);
 			RunningProgram->Render(TickTime);
 			glFlush();
 #else

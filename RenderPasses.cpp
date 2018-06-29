@@ -95,7 +95,7 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 
 	glDisable(GL_DEPTH_TEST);
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	gluOrtho2D(0, SIZE_X, 0, SIZE_Y);
 	glViewport(0, 0, SIZE_X, SIZE_Y);
 
@@ -211,7 +211,7 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 
 	// Set background color and clear buffers
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glViewport(0, 0, glContext.screen_width, glContext.screen_height);
 
 
