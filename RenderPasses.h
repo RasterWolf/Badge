@@ -13,8 +13,6 @@ public:
 	void DestroyGL();
 	void CheckForError();
 	void SwapBuffers();
-private:
-	UnitCubeGeo * UnitCube = nullptr;
 };
 
 extern RenderPasses* GRenderPasses;

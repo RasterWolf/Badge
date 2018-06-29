@@ -17,8 +17,11 @@ void RenderPasses::RenderFullScreen(const BadgeImage& Texture)
 void RenderPasses::RenderFullScreen(unsigned int Texture)
 {
 	ShaderPrograms::SetProgram(SP_FullScreen);
+	GL_ASSERT;
 	glBindTexture(GL_TEXTURE_2D, Texture);
-	UnitCube->Draw();
+	GL_ASSERT;
+	GUnitCube->Draw();
+	GL_ASSERT;
 }
 
 void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& ObjectMatrix, bool EnableAlpha, const glm::vec3& colorMod)
@@ -42,6 +45,7 @@ void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& Ob
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		GL_ASSERT;
 	}
 
 #if 0
@@ -51,11 +55,14 @@ void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& Ob
 	glm::vec4 p3 = mvp * glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
 	glm::vec4 p4 = mvp * glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f);
 #endif 
-	UnitCube->Draw();
+	GUnitCube->Draw();
+	GL_ASSERT;
 
 	if(EnableAlpha)
 	{
 		glDisable(GL_BLEND);
+		GL_ASSERT;
+
 	}
 
 }
@@ -95,14 +102,12 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 	std::cout << glGetString(GL_RENDERER) << std::endl;
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	UnitCube = new UnitCubeGeo();
+	
 
 }
 
 void RenderPasses::DestroyGL()
 {
-	if (UnitCube)
-		delete UnitCube;
 }
 void RenderPasses::SwapBuffers()
 {
@@ -161,8 +166,14 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 	result = eglChooseConfig(glContext.display, attribute_list, &config, 1, &num_config);
 	assert(EGL_FALSE != result);
 
+	static const EGLint context_attributes[] =
+	{
+		EGL_CONTEXT_CLIENT_VERSION, 2,
+		EGL_NONE
+	};
+
 	// create an EGL rendering context
-	glContext.context = eglCreateContext(glContext.display, config, EGL_NO_CONTEXT, NULL);
+	glContext.context = eglCreateContext(glContext.display, config, EGL_NO_CONTEXT, context_attributes);
 	assert(glContext.context != EGL_NO_CONTEXT);
 
 	// create an EGL window surface
@@ -199,14 +210,6 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 	assert(EGL_FALSE != result);
 
 	// Set background color and clear buffers
-	glClearColor(0.15f, 0.25f, 0.35f, 1.0f);
-
-	// Enable back face culling.
-	glEnable(GL_CULL_FACE);
-
-	//glMatrixMode(GL_MODELVIEW);
-
-	glDisable(GL_DEPTH_TEST);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glViewport(0, 0, glContext.screen_width, glContext.screen_height);
@@ -215,9 +218,6 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 	std::cout << glGetString(GL_RENDERER) << std::endl;
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	std::cout << "Screen Resolution " << glContext.screen_width << "x" << glContext.screen_height << std::endl;
-
-	UnitCube = new UnitCubeGeo();
-
 }
 
 void RenderPasses::SwapBuffers()

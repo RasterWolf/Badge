@@ -27,16 +27,16 @@ void ShaderPrograms::InitShaderPrograms()
 		glAttachShader(shaderProgram, Vs.GetShaderProgram(def.VertexShader));
 		glAttachShader(shaderProgram, Ps.GetShaderProgram(def.FragmentShader));
 		glLinkProgram(shaderProgram);
+		GL_ASSERT;
 
-
-		//int  success = 1;
+		int  success = 0;
 		char infoLog[512] = { 0 };
-		//glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-		//if(!success) 
+		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+		if(success == GL_FALSE) 
 		{
 			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-			if(infoLog[0])
-			std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
+			//if(infoLog[0])
+			std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED " << success << " " << shaderProgram <<  "\n" << infoLog << std::endl;
 		    
 		}
 

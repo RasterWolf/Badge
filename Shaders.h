@@ -46,14 +46,15 @@ public:
 
 			glShaderSource(shader,1,(const GLchar**)&glsl,&size);
 			glCompileShader(shader);
+			GL_ASSERT;
 
-			int  success;
-			char infoLog[512];
+			int  success = 0;
+			char infoLog[512] = { 0 };
 			glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 			if (!success)
 			{
 				glGetShaderInfoLog(shader, 512, NULL, infoLog);
-				std::cout << "ERROR::SHADER::" << pipeline::GetName() << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+				std::cout << "ERROR::SHADER::" << pipeline::GetName() << "::COMPILATION_FAILED " << success << " " << shader <<  "\n" << infoLog << std::endl;
 			}
 
 			free(glsl);
@@ -163,6 +164,11 @@ public:
 	static GLuint GetProgram(ShaderProgram sp)
 	{
 		return AllShaderPrograms[sp];
+	}
+
+	static GLuint GetVertexAttrib(ShaderProgram sp, const char* attribute)
+	{
+		return glGetAttribLocation(AllShaderPrograms[sp], attribute);
 	}
 
 private:

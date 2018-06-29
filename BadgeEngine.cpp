@@ -67,6 +67,7 @@ void BadgeEngine::Initialize(int* argc, char *argv[])
 
 	ShaderPrograms::InitShaderPrograms();
 	TextureManager::InitTextureManager();
+	GUnitCube = new UnitCubeGeo();
 
 	srand(time(nullptr));
 	SDL_Init(SDL_INIT_TIMER);
@@ -80,6 +81,7 @@ void BadgeEngine::Shutdown()
 	{
 		ShaderPrograms::DeleteShaderPrograms();
 		TextureManager::DeleteTextureManager();
+		delete GUnitCube;
 		SDL_Quit();
 		
 		GRenderPasses->DestroyGL();
@@ -127,6 +129,7 @@ void BadgeEngine::HandleKeyPress(unsigned char key, int x, int y)
 
 		ShaderPrograms::InitShaderPrograms();
 		TextureManager::InitTextureManager();
+		new(GUnitCube) UnitCubeGeo();
 
 	}
 	if (RunningProgram)
