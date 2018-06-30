@@ -6,7 +6,7 @@ public:
 	UnitCubeGeo();
 	~UnitCubeGeo();
 
-	void Draw() const;
+	void Draw(bool bInvert = false) const;
 	unsigned int VertexBuffer;
 	unsigned int IndexBuffer;
 	unsigned int PositionAttrib;

@@ -1,6 +1,9 @@
 #include "RenderTarget.h"
 #include "MyGL.h"
 #include "RenderPasses.h"
+#include "BadgeEngine.h"
+
+RenderTargetFlipFlop* GRenderTargets;
 
 RenderTarget::RenderTarget(int SizeX, int SizeY)
 {
@@ -23,10 +26,29 @@ RenderTarget::RenderTarget(int SizeX, int SizeY)
 
 	GRenderPasses->CheckForError();
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 RenderTarget::~RenderTarget()
 {
 	glDeleteTextures(1, &ShaderResourceId);
 	glDeleteFramebuffers(1, &RenderTargetId);
+}
+
+RenderTargetFlipFlop::RenderTargetFlipFlop()
+{
+	RtIndex = 0;
+	SceneTargets[0] = new RenderTarget(GEngine.GetWidth(), GEngine.GetHeight());
+	SceneTargets[1] = new RenderTarget(GEngine.GetWidth(), GEngine.GetHeight());
+}
+
+RenderTargetFlipFlop::~RenderTargetFlipFlop()
+{
+}
+
+RenderTarget * RenderTargetFlipFlop::GetRenderTarget()
+{
+	RtIndex ^= 1;
+	return SceneTargets[RtIndex];
 }

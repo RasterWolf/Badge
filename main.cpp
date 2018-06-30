@@ -3,7 +3,7 @@
 using namespace std;
 
 #include "BadgeEngine.h"
-#include "BadgePrograms.h"
+#include "RasterProgram.h"
 
 int main(int argc, char *argv[])
 {

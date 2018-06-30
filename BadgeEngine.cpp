@@ -7,7 +7,7 @@
 #include "Shaders.h"
 #include "TextureManager.h"
 #include "Constant.h"
-
+#include "RenderTarget.h"
 
 BadgeEngine GEngine;
 SDL_Window *window;
@@ -28,20 +28,17 @@ void checkSDLError(int line = -1)
 
 void BadgeEngine::Initialize()
 {
-	srand(time(nullptr));
+	srand((unsigned int)time(nullptr));
 
 	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
 
 #if _MSC_VER
 	SDL_WindowFlags flags = SDL_WINDOW_OPENGL;
 	const glm::ivec2 WindowSize(480, 720);
-
-	
 #else
 	SDL_WindowFlags flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
 	const glm::ivec2 WindowSize(0, 0);
 #endif
-	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
 
 	window = SDL_CreateWindow(
 		"RasterBadge",					   // window title
@@ -72,6 +69,8 @@ void BadgeEngine::Initialize()
 	ShaderPrograms::InitShaderPrograms();
 	TextureManager::InitTextureManager();
 	GUnitCube = new UnitCubeGeo();
+	GRenderTargets = new RenderTargetFlipFlop();
+
 
 	bIsInitialized = true;
 }
@@ -138,7 +137,7 @@ void BadgeEngine::MainLoop()
 			return;
 		}
 
-		if (InnerMainLoop(true))
+		if (InnerMainLoop(false))
 		{
 #if _MSC_VER
 			SDL_GL_SwapWindow(window);
@@ -164,10 +163,13 @@ void BadgeEngine::HandleKeyPress(unsigned char key, int x, int y)
 	{
 		ShaderPrograms::DeleteShaderPrograms();
 		TextureManager::DeleteTextureManager();
+		delete GUnitCube;
+		delete GRenderTargets;
 
 		ShaderPrograms::InitShaderPrograms();
 		TextureManager::InitTextureManager();
-		new(GUnitCube) UnitCubeGeo();
+		GUnitCube = new UnitCubeGeo();
+		GRenderTargets = new RenderTargetFlipFlop();
 
 	}
 	if (RunningProgram)

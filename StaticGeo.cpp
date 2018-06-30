@@ -22,6 +22,15 @@ float vertices2[] = {
 	1.0f, -1.0f, 0.0f,   1.0f, 1.0f,   //1
 	-1.0f, -1.0f, 0.0f,   0.0f, 1.0f,  //2
 	-1.0f,  1.0f, 0.0f,   0.0f, 0.0f,  //3	
+
+	// positions          // Tex Coord
+	1.0f,  1.0f, 0.0f,   1.0f, 1.0f,   //0
+	1.0f, -1.0f, 0.0f,   1.0f, 0.0f,   //1
+	-1.0f,  1.0f, 0.0f,   0.0f, 1.0f,   //3
+
+	1.0f, -1.0f, 0.0f,   1.0f, 0.0f,   //1
+	-1.0f, -1.0f, 0.0f,   0.0f, 0.0f,  //2
+	-1.0f,  1.0f, 0.0f,   0.0f, 1.0f,  //3	
 };
 
 unsigned int indices[] = {  // note that we start from 0!
@@ -60,12 +69,20 @@ UnitCubeGeo::~UnitCubeGeo()
 	glDeleteBuffers(1,&IndexBuffer);
 }
 
-void UnitCubeGeo::Draw() const
+void UnitCubeGeo::Draw(bool bInvert) const
 {
 	//glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
 
 	//glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	if (!bInvert)
+	{
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	}
+	else
+	{
+		glDrawArrays(GL_TRIANGLE_STRIP, 6, 6);
+
+	}
 	GL_ASSERT; 
 }

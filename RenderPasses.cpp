@@ -9,6 +9,14 @@
 
 RenderPasses* GRenderPasses = nullptr;
 
+void RenderPasses::SetRenderTarget(const RenderTarget * rt)
+{
+	if (rt)
+		glBindFramebuffer(GL_FRAMEBUFFER, rt->RenderTargetId);
+	else
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void RenderPasses::RenderFullScreen(const BadgeImage& Texture)
 {
 	RenderFullScreen(Texture.TextureId);
@@ -21,6 +29,16 @@ void RenderPasses::RenderFullScreen(unsigned int Texture)
 	glBindTexture(GL_TEXTURE_2D, Texture);
 	GL_ASSERT;
 	GUnitCube->Draw();
+	GL_ASSERT;
+}
+
+void RenderPasses::RenderFullScreenInverted(unsigned int Texture)
+{
+	ShaderPrograms::SetProgram(SP_FullScreen);
+	GL_ASSERT;
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	GL_ASSERT;
+	GUnitCube->Draw(true);
 	GL_ASSERT;
 }
 

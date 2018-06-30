@@ -154,6 +154,8 @@
     <ClCompile Include="BadgePrograms.cpp" />
     <ClCompile Include="BasicActors.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PostEffects.cpp" />
+    <ClCompile Include="RasterProgram.cpp" />
     <ClCompile Include="RenderPasses.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Shaders.cpp" />
@@ -167,6 +169,8 @@
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MyGL.h" />
+    <ClInclude Include="PostEffects.h" />
+    <ClInclude Include="RasterProgram.h" />
     <ClInclude Include="RenderPasses.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Shaders.h" />
