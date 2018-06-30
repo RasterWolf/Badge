@@ -36,7 +36,7 @@ void BadgeEngine::Initialize()
 	SDL_WindowFlags flags = SDL_WINDOW_OPENGL;
 	const glm::ivec2 WindowSize(480, 720);
 #else
-	SDL_WindowFlags flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
+	unsigned int flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
 	const glm::ivec2 WindowSize(0, 0);
 #endif
 
@@ -114,8 +114,8 @@ void BadgeEngine::MainLoop()
 				float fx = event.button.x / (float)WindowWidth;
 				float fy = event.button.y / (float)WindowHeight;
 				std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
-				HandleLeftClick(fx, fy);
-				//HandleLeftClick(48, 222);
+				//HandleLeftClick(fx, fy);
+				HandleLeftClick(0.14f, 0.46f);
 			}
 
 			if (event.type == SDL_KEYDOWN && event.key.state == SDL_PRESSED && event.key.repeat == 0)

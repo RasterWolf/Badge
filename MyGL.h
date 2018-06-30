@@ -12,10 +12,10 @@
 #include "EGL/eglext.h"
 #endif
 
-#if 0
+#if 1
 #include <cassert>
 #include <iostream>
-#define GL_ASSERT {GLenum err = glGetError(); if(err != GL_NO_ERROR){std::cout<<"GL error: " << err << "Function: " << __FUNCTION__ <<std::endl; exit(0);}} 
+#define GL_ASSERT {GLenum err = glGetError(); if(err != GL_NO_ERROR){std::cout<<"GL error: " << err << " Function: " << __FUNCTION__ <<std::endl; exit(0);}} 
 #else
 #define GL_ASSERT
 #endif

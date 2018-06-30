@@ -12,8 +12,8 @@ public:
 
 	void HandleClick(float x, float y) override;
 	void HandleKeyPress(unsigned char key) override;
-	bool Integrate(float delta);
-	void Render(float delta);
+	bool Integrate(float delta) override;
+	void Render(float delta) override;
 
 protected:
 	BadgeProgram * RunningProgram;

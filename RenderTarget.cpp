@@ -7,27 +7,22 @@ RenderTargetFlipFlop* GRenderTargets;
 
 RenderTarget::RenderTarget(int SizeX, int SizeY)
 {
-	glGenFramebuffers(1, &RenderTargetId);
-	glBindFramebuffer(GL_FRAMEBUFFER, RenderTargetId);
-
 	glGenTextures(1, &ShaderResourceId);
 
 	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, ShaderResourceId);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SizeX, SizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	
 
-	// Give an empty image to OpenGL ( the last "0" )
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SizeX, SizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-
-	// Poor filtering. Needed !
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
+	glGenFramebuffers(1, &RenderTargetId);
+	glBindFramebuffer(GL_FRAMEBUFFER, RenderTargetId);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ShaderResourceId, 0);
 
-	GRenderPasses->CheckForError();
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	GL_ASSERT;
 }
 
 RenderTarget::~RenderTarget()
