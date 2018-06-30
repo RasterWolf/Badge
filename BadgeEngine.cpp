@@ -10,91 +10,68 @@
 
 
 BadgeEngine GEngine;
-#if USE_GLUT
-void MouseClick(int button, int state, int x, int y)
-{
-	std::cout << button << " " << state << " " << x << " " << y << std::endl;
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
-		GEngine.HandleLeftClick(x, y);
-}
-
-void glutIdle()
-{
-	if (GEngine.InnerMainLoop(false))
-	{
-		glutSwapBuffers();
-		GLenum err = glGetError();
-		if (err != GL_NO_ERROR)
-		{
-			std::cout << "GL Error: " << gluErrorString(err) << std::endl;
-		}
-		glutPostRedisplay();
-	}
-}
-
-void gluRender()
-{
-	/*if (GEngine.InnerMainLoop(true))
-	{
-		glutSwapBuffers();
-		GLenum err = glGetError();
-		if (err != GL_NO_ERROR)
-		{
-			std::cout << "GL Error: " << gluErrorString(err) << std::endl;
-		}
-		glutPostRedisplay();
-	}*/
-}
-
-void KeyEnter(unsigned char key, int x, int y)
-{
-	GEngine.HandleKeyPress(key,x,y);
-}
-#else
-
 SDL_Window *window;
-int width;
-int height;
 
-#endif
-
-void BadgeEngine::Initialize(int* argc, char *argv[])
+void checkSDLError(int line = -1)
 {
-	GRenderPasses = new RenderPasses();
-	GRenderPasses->InitGL(argc, argv);
-
-#if USE_GLUT
-	glutDisplayFunc(gluRender);
-	glutIdleFunc(glutIdle);
-
-	//input
-	glutKeyboardFunc(KeyEnter);
-	glutMouseFunc(MouseClick); //Only care about left click
+#ifndef NDEBUG
+	const char *error = SDL_GetError();
+	if (*error != '\0')
+	{
+		printf("SDL Error: %s\n", error);
+		if (line != -1)
+			printf(" + line: %i\n", line);
+		SDL_ClearError();
+	}
 #endif
+}
 
-	ShaderPrograms::InitShaderPrograms();
-	TextureManager::InitTextureManager();
-	GUnitCube = new UnitCubeGeo();
-
+void BadgeEngine::Initialize()
+{
 	srand(time(nullptr));
 
-#if !USE_GLUT
+	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
+
+#if _MSC_VER
+	SDL_WindowFlags flags = SDL_WINDOW_OPENGL;
+	const glm::ivec2 WindowSize(480, 720);
+
+	
+#else
+	SDL_WindowFlags flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
+	const glm::ivec2 WindowSize(0, 0);
+#endif
 	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
 
 	window = SDL_CreateWindow(
 		"RasterBadge",					   // window title
 		SDL_WINDOWPOS_UNDEFINED,           // initial x position
 		SDL_WINDOWPOS_UNDEFINED,           // initial y position
-		0,                               // width, in pixels
-		0,                               // height, in pixels
-		SDL_WINDOW_FULLSCREEN_DESKTOP| SDL_WINDOW_BORDERLESS                 // flags - see below
+		WindowSize.x,                               // width, in pixels
+		WindowSize.y,                               // height, in pixels
+		flags                // flags - see below
 	);
 
-	SDL_GetWindowSize(window, &width, &height);
-	
-#else
-	SDL_Init(SDL_INIT_TIMER);
+#if _MSC_VER
+	SDL_GLContext glcontext = SDL_GL_CreateContext(window);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+	SDL_GL_SetSwapInterval(1);
+	checkSDLError(__LINE__);
 #endif
+
+	SDL_GetWindowSize(window, &WindowWidth, &WindowHeight);
+
+	GRenderPasses = new RenderPasses();
+	GRenderPasses->InitGL();
+
+	glViewport(0, 0, WindowWidth, WindowHeight);
+
+
+	ShaderPrograms::InitShaderPrograms();
+	TextureManager::InitTextureManager();
+	GUnitCube = new UnitCubeGeo();
 
 	bIsInitialized = true;
 }
@@ -127,9 +104,6 @@ void BadgeEngine::MainLoop()
 {
 	assert(bIsInitialized);
 
-#if USE_GLUT
-	glutMainLoop();
-#else
 	while (true)
 	{
 		SDL_Event event;
@@ -138,12 +112,10 @@ void BadgeEngine::MainLoop()
 		{
 			if (event.type == SDL_MOUSEBUTTONUP)
 			{
-				float fx = event.button.x / (float)width;
-				float fy = event.button.y / (float)height;
-				int x = int(fx*SIZE_X);
-				int y = int(fy*SIZE_Y);
-				std::cout << "mouse clicked: " << x << "x" << y << std::endl;
-				HandleLeftClick(x, y);
+				float fx = event.button.x / (float)WindowWidth;
+				float fy = event.button.y / (float)WindowHeight;
+				std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
+				HandleLeftClick(fx, fy);
 				//HandleLeftClick(48, 222);
 			}
 
@@ -166,15 +138,18 @@ void BadgeEngine::MainLoop()
 			return;
 		}
 
-		if (InnerMainLoop(false))
+		if (InnerMainLoop(true))
 		{
+#if _MSC_VER
+			SDL_GL_SwapWindow(window);
+#else
 			GRenderPasses->SwapBuffers();
+#endif
 		}
 	}
-#endif
 }
 
-void BadgeEngine::HandleLeftClick(int x, int y)
+void BadgeEngine::HandleLeftClick(float x, float y)
 {
 	if (RunningProgram)
 	{

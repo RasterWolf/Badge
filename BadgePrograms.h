@@ -10,7 +10,7 @@ class BadgeProgram
 {
 public:
 	virtual ~BadgeProgram() { ; }
-	virtual void HandleClick(int x, int y) { ; }
+	virtual void HandleClick(float x, float y) { ; }
 	virtual void HandleKeyPress(unsigned char key) {;}
 	virtual void Render(float delta)=0;
 	virtual bool Integrate(float delta){ return false;}
@@ -135,7 +135,7 @@ public:
 		BadgeFrames[1] = TextureManager::GetTexture("RasterBadge2.png");
 	}
 	~RasterBadge(){;}
-	void HandleClick(int x, int y) override;
+	void HandleClick(float x, float y) override;
 	void Render(float delta) override;
 	bool Integrate(float delta) override;
 private:
@@ -171,7 +171,7 @@ public:
 		Background = TextureManager::GetTexture("PulexBadge.png");
 	}
 	~PulexBadge() { ; }
-	void HandleClick(int x, int y) override;
+	void HandleClick(float x, float y) override;
 	void Render(float delta) override;
 	bool Integrate(float delta) override;
 private:
@@ -189,7 +189,7 @@ public:
 	RasterProgram();
 	~RasterProgram();
 
-	virtual void HandleClick(int x, int y) override;
+	virtual void HandleClick(float x, float y) override;
 	virtual void HandleKeyPress(unsigned char key) override;
 	virtual void Render(float delta) override;
 	virtual bool Integrate(float delta) override;
@@ -222,5 +222,5 @@ public:
 protected:
 	bool bForceNextFrameRender;
 
-	int UpdateInvisibleButtonClick(int x, int y);
+	int UpdateInvisibleButtonClick(float x, float y);
 };

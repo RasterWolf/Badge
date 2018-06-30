@@ -12,7 +12,7 @@ public:
 	BadgeEngine() = default;
 	~BadgeEngine() = default;
 
-	void Initialize(int* argc, char *argv[]);
+	void Initialize();
 	void Shutdown();
 	void SetBadgeProgram(BadgeProgram* prog)
 	{
@@ -20,8 +20,10 @@ public:
 	}
 
 	void MainLoop();
-	void HandleLeftClick(int x, int y);
+	void HandleLeftClick(float x, float y);
 	void HandleKeyPress(unsigned char key, int x, int y);
+	int GetWidth() const { return WindowWidth;  }
+	int GetHeight() const { return WindowHeight;  }
 
 	bool InnerMainLoop(bool bForceDraw);
 
@@ -32,6 +34,8 @@ private:
 	bool bIsInitialized = false;
 	BadgeProgram* RunningProgram = nullptr;
 	unsigned int LastRenderTime = 0;
+	int WindowWidth;
+	int WindowHeight;
 
 };
 

@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	GEngine.Initialize(&argc,argv);
+	GEngine.Initialize();
 
 	RasterProgram rp;
 	GEngine.SetBadgeProgram(&rp);

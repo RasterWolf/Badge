@@ -76,17 +76,9 @@ void RenderPasses::CheckForError()
 	}
 }
 
-#if USE_GLEW
-void RenderPasses::InitGL(int* argc, char *argv[])
+#if _MSC_VER
+void RenderPasses::InitGL()
 {
-	int win;
-
-	glutInit(argc, argv);
-
-	glutInitDisplayMode(GLUT_RGB);
-	glutInitWindowSize(SIZE_X, SIZE_Y);
-	win = glutCreateWindow("RasterBadge");
-
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
@@ -96,8 +88,7 @@ void RenderPasses::InitGL(int* argc, char *argv[])
 	glDisable(GL_DEPTH_TEST);
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
-	gluOrtho2D(0, SIZE_X, 0, SIZE_Y);
-	glViewport(0, 0, SIZE_X, SIZE_Y);
+	//gluOrtho2D(0, SIZE_X, 0, SIZE_Y);
 
 	std::cout << glGetString(GL_RENDERER) << std::endl;
 	std::cout << glGetString(GL_VERSION) << std::endl;
@@ -129,7 +120,7 @@ typedef struct
 
 GL_CONTEXT glContext;
 
-void RenderPasses::InitGL(int* argc, char *argv[])
+void RenderPasses::InitGL()
 {
 	bcm_host_init();
 	int32_t success = 0;

@@ -38,10 +38,10 @@ bool TempImageActor::Integrate(float tick)
 }
 
 //Raster Badge
-glm::vec2 RasterBadge::NoseMin = glm::vec2(47, 221)*SCALE;
-glm::vec2 RasterBadge::NoseSize = glm::vec2(61, 49)*SCALE;
+glm::vec2 RasterBadge::NoseMin = glm::vec2(0.14f, 0.46f);
+glm::vec2 RasterBadge::NoseSize = glm::vec2(0.19f, 0.1);
 
-void RasterBadge::HandleClick(int x, int y)
+void RasterBadge::HandleClick(float x, float y)
 {
 	if (x >= NoseMin.x && x <= NoseMin.x + NoseSize.x &&
 		y >= NoseMin.y && y <= NoseMin.y + NoseSize.y)
@@ -78,14 +78,14 @@ bool RasterBadge::Integrate(float delta)
 }
 
 //Pulex Badge
-glm::vec2 PulexBadge::HeartMin = glm::vec2(164,260)*SCALE;
-glm::vec2 PulexBadge::HeartSize = glm::vec2(64,60)*SCALE;
+glm::vec2 PulexBadge::HeartMin = glm::vec2(0.50f,0.54f);
+glm::vec2 PulexBadge::HeartSize = glm::vec2(0.2f,0.125f);
 
 glm::vec3 HeartColors[] = { {1.0f,0.45f,0.55f},
 							{0.1f,0.66f,0.3f},
 							{1.0f,0.6,0.96f} };
 
-void PulexBadge::HandleClick(int x, int y)
+void PulexBadge::HandleClick(float x, float y)
 {
 	if(x >= HeartMin.x && x <= HeartMin.x + HeartSize.x &&
 		y >= HeartMin.y && y <= HeartMin.y + HeartSize.y)
@@ -153,7 +153,7 @@ RasterProgram::~RasterProgram()
 	AllBadgePrograms.empty();
 }
 
-void RasterProgram::HandleClick(int x, int y)
+void RasterProgram::HandleClick(float x, float y)
 {
 	int i = UpdateInvisibleButtonClick(x,y);
 	if (i != -1)
@@ -199,24 +199,24 @@ bool RasterProgram::Integrate(float delta)
 	return CurrentProgram->Integrate(delta) || tmp;
 }
 
-int RasterProgram::UpdateInvisibleButtonClick(int x, int y)
+int RasterProgram::UpdateInvisibleButtonClick(float x, float y)
 {
-	const int ButtonSize = int(14*SCALE);
+	const float ButtonSize = 0.1f;
 	const int NumClicks = 4;
-	const int XLimit = SIZE_X - ButtonSize;
-	const int YLimit = SIZE_Y - ButtonSize;
+	const float XLimit = 1.f - ButtonSize;
+	const float YLimit = 1.f - ButtonSize;
 	
 	glm::ivec4 iSelect(0);
 	int ButtonIndex = -1;
 
-	const glm::ivec4 ButtonLocations[] = { glm::ivec4(0,0,ButtonSize,ButtonSize),
-									glm::ivec4(XLimit,0,SIZE_X,ButtonSize),
-									glm::ivec4(0,YLimit,ButtonSize,SIZE_Y), 
-									glm::ivec4(XLimit,YLimit,SIZE_X,SIZE_Y) };
+	const glm::vec4 ButtonLocations[] = { glm::vec4(0,0,ButtonSize,ButtonSize),
+										  glm::vec4(XLimit,0,1.f,ButtonSize),
+										  glm::vec4(0,YLimit,ButtonSize,1.f), 
+										  glm::vec4(XLimit,YLimit,1.f,1.f) };
 
 	for (int i = 0; i < sizeof(ButtonLocations) / sizeof(ButtonLocations[0]); i++)
 	{
-		const glm::ivec4& item = ButtonLocations[i];
+		const auto& item = ButtonLocations[i];
 		if ((x >= item.x && x <= item.z) && 
 			(y >= item.y && y <= item.w))
 		{
