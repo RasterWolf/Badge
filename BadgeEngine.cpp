@@ -142,7 +142,7 @@ void BadgeEngine::MainLoop()
 #else
 			GRenderPasses->SwapBuffers();
 #endif
-			std::cout << "draw" << std::endl;
+			//std::cout << "draw" << std::endl;
 		}
 	}
 }
@@ -218,13 +218,12 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 	uint32_t end = SDL_GetTicks();
 	auto diff = end - Start;
 
-#if 1
+#if 0
 	if (diff > FrameTime)
 		std::cout << Start << " " << end << " " << diff << std::endl;
 #endif
 	if (diff < FrameTime)
 	{
-		std::cout << "sleeping " << (end - Start) <<  std::endl;
 		SDL_Delay(FrameTime - diff);
 	}
 
