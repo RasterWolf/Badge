@@ -1,8 +1,10 @@
-#version 130
+#version 100
+precision mediump float;
+
 uniform float iTime;
 uniform sampler2D iChannel0;
-in vec2 TexCoord;
-out vec4 outColor;
+varying vec2 TexCoord;
+//out vec4 outColor;
 
 //Shader toy
 float vertJerkOpt = 1.0;
@@ -110,14 +112,14 @@ void main()
         
     staticVal *= bottomStaticOpt;
 	
-	float red 	=   texture(	iChannel0, 	vec2(uv.x + xOffset -0.01*rgbOffsetOpt,y)).r+staticVal;
-	float green = 	texture(	iChannel0, 	vec2(uv.x + xOffset,	  y)).g+staticVal;
-	float blue 	=	texture(	iChannel0, 	vec2(uv.x + xOffset +0.01*rgbOffsetOpt,y)).b+staticVal;
+	float red 	=   texture2D(	iChannel0, 	vec2(uv.x + xOffset -0.01*rgbOffsetOpt,y)).r+staticVal;
+	float green = 	texture2D(	iChannel0, 	vec2(uv.x + xOffset,	  y)).g+staticVal;
+	float blue 	=	texture2D(	iChannel0, 	vec2(uv.x + xOffset +0.01*rgbOffsetOpt,y)).b+staticVal;
 	
 	vec3 color = vec3(red,green,blue);
 	float scanline = sin(uv.y*800.0)*0.04*scalinesOpt;
 	color -= scanline;
 	
-	outColor = vec4(color,1.0);
+	gl_FragColor = vec4(color,1.0);
 	
 }

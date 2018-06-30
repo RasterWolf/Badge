@@ -1,13 +1,11 @@
-#version 130
+#version 100
+precision mediump float;
+
 uniform float iTime;
 uniform ivec2 iResolution;
 uniform sampler2D iChannel0;
-uniform sampler2D iChannel1;
-uniform sampler2D iChannel2;
-uniform sampler2D iChannel3;
 
-in vec2 TexCoord;
-out vec4 fragColor;
+varying vec2 TexCoord;
 
 //ShaderToy
 
@@ -28,9 +26,9 @@ void main()
 	
 	// final color
     vec3 col;
-    col.r = texture( iChannel0, vec2(uv.x+blur,uv.y) ).r;
-    col.g = texture( iChannel0, uv ).g;
-    col.b = texture( iChannel0, vec2(uv.x-blur,uv.y) ).b;
+    col.r = texture2D( iChannel0, vec2(uv.x+blur,uv.y) ).r;
+    col.g = texture2D( iChannel0, uv ).g;
+    col.b = texture2D( iChannel0, vec2(uv.x-blur,uv.y) ).b;
 	
 	// scanline
 	float scanline = sin(uv.y*800.0)*0.04;
@@ -38,6 +36,6 @@ void main()
 	
 	// vignette
 	col *= 1.0 - d * 0.5;
+	gl_FragColor = vec4(col,1.0);
 	
-    fragColor = vec4(col,1.0);
 }

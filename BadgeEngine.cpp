@@ -215,15 +215,16 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 		}
 
 	}
+	uint32_t end = SDL_GetTicks();
+	auto diff = end - Start;
 
-	auto diff = SDL_GetTicks() - Start;
-
-#ifdef ON_PI
+#if 1
 	if (diff > FrameTime)
-		std::cout << Start << " " << SDL_GetTicks() << " " << diff << std::endl;
+		std::cout << Start << " " << end << " " << diff << std::endl;
 #endif
 	if (diff < FrameTime)
 	{
+		std::cout << "sleeping " << (end - Start) <<  std::endl;
 		SDL_Delay(FrameTime - diff);
 	}
 
