@@ -24,6 +24,7 @@ public:
 	void HandleKeyPress(unsigned char key, int x, int y);
 	int GetWidth() const { return WindowWidth;  }
 	int GetHeight() const { return WindowHeight;  }
+	float GetTimeSeconds() const;
 
 	bool InnerMainLoop(bool bForceDraw);
 

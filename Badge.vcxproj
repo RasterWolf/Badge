@@ -184,6 +184,8 @@
     <None Include="ImageBoxVS.glsl" />
     <None Include="Makefile" />
     <None Include="SConstruct" />
+    <None Include="TvDistortion.glsl" />
+    <None Include="ChromaticalFS.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

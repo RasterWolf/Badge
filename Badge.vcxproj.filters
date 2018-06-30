@@ -109,5 +109,11 @@
     <None Include="Makefile">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="TvDistortion.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ChromaticalFS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

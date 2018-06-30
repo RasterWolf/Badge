@@ -177,6 +177,11 @@ void BadgeEngine::HandleKeyPress(unsigned char key, int x, int y)
 	}
 }
 
+float BadgeEngine::GetTimeSeconds() const
+{
+	return SDL_GetTicks() / 1000.0f;
+}
+
 bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 {
 	unsigned int Start = SDL_GetTicks();

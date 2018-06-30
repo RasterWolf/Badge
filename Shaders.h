@@ -11,6 +11,8 @@ enum ShaderProgram
 {
 	SP_FullScreen,
 	SP_ImageBox,
+	SP_TvDistortion,
+	SP_Chromatical,
 	SP_MAX
 };
 
@@ -20,7 +22,7 @@ class Shaders
 public:
 	void InitShaders()
 	{
-		for (size_t i = 0; i < pipeline::GetMaxShaders(); i++)
+		for (size_t i = 0; i < (size_t)pipeline::GetMaxShaders(); i++)
 		{
 			GLuint shader = glCreateShader(pipeline::GetShaderPipeline());
 
@@ -41,6 +43,7 @@ public:
 			file.seekg(0,file.beg);
 
 			GLchar* glsl = (GLchar*)malloc(size);
+			memset((void*)glsl, 0, size);
 			file.read(glsl, size);
 			file.close();
 
@@ -54,7 +57,7 @@ public:
 			if (!success)
 			{
 				glGetShaderInfoLog(shader, 512, NULL, infoLog);
-				std::cout << "ERROR::SHADER::" << pipeline::GetName() << "::COMPILATION_FAILED " << success << " " << shader <<  "\n" << infoLog << std::endl;
+				std::cout << "ERROR::SHADER::" << pipeline::GetName() << "::COMPILATION_FAILED::" << ShaderFiles[i].c_str() << " " << success << " " << shader <<  "\n" << infoLog << std::endl;
 			}
 
 			free(glsl);
@@ -121,6 +124,8 @@ enum FragmentShaderProgram
 {
 	FS_FullScreen,
 	FS_ImageBox,
+	FS_TvDistortion,
+	FS_Chromatical,
 	FS_MAX
 };
 
@@ -132,6 +137,8 @@ public:
 	{
 		ShaderFiles[FS_FullScreen] = "FullScreenFS.glsl";
 		ShaderFiles[FS_ImageBox] = "ImageBoxFS.glsl";
+		ShaderFiles[FS_TvDistortion] = "TvDistortion.glsl";
+		ShaderFiles[FS_Chromatical] = "ChromaticalFS.glsl";
 	}
 	static constexpr GLenum GetShaderPipeline() 
 	{
@@ -166,9 +173,14 @@ public:
 		return AllShaderPrograms[sp];
 	}
 
-	static GLuint GetVertexAttrib(ShaderProgram sp, const char* attribute)
+	static GLint GetVertexAttrib(ShaderProgram sp, const char* attribute)
 	{
 		return glGetAttribLocation(AllShaderPrograms[sp], attribute);
+	}
+
+	static GLint GetUniformLocation(ShaderProgram sp, const char* uniform)
+	{
+		return glGetUniformLocation(AllShaderPrograms[sp], uniform);
 	}
 
 private:

@@ -62,8 +62,6 @@ void RasterBadge::HandleClick(float x, float y)
 			bp->Scale = 0.5;
 		}
 	}
-
-	//special if there isn't a boop actor ?
 }
 
 void RasterBadge::Render(float delta)

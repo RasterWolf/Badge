@@ -17,8 +17,11 @@ void ShaderPrograms::InitShaderPrograms()
 		VertexShaderProgram		VertexShader;
 	};
 
-	ProgramDef ProgramDefinitions[] = {{FS_FullScreen,VS_FullScreen},
-										{FS_ImageBox,VS_ImageBox}};
+	ProgramDef ProgramDefinitions[] = { {FS_FullScreen,VS_FullScreen},
+	{ FS_ImageBox,VS_ImageBox },
+	{ FS_TvDistortion,VS_FullScreen },
+	{ FS_Chromatical,VS_FullScreen },
+	};
 
 	for(int i = 0 ; i < SP_MAX ; ++i)
 	{
