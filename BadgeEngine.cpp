@@ -89,9 +89,7 @@ void BadgeEngine::Shutdown()
 		RunningProgram = nullptr;
 		
 		bIsInitialized = false;
-#if !USE_GLUT
 		SDL_DestroyWindow(window);
-#endif
 		SDL_Quit();
 
 		exit(0);
@@ -114,8 +112,8 @@ void BadgeEngine::MainLoop()
 				float fx = event.button.x / (float)WindowWidth;
 				float fy = event.button.y / (float)WindowHeight;
 				std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
-				//HandleLeftClick(fx, fy);
-				HandleLeftClick(0.14f, 0.46f);
+				HandleLeftClick(fx, fy);
+				//HandleLeftClick(0.14f, 0.46f);
 			}
 
 			if (event.type == SDL_KEYDOWN && event.key.state == SDL_PRESSED && event.key.repeat == 0)
@@ -144,6 +142,7 @@ void BadgeEngine::MainLoop()
 #else
 			GRenderPasses->SwapBuffers();
 #endif
+			std::cout << "draw" << std::endl;
 		}
 	}
 }

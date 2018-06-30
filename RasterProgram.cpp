@@ -7,19 +7,23 @@ RasterProgram::RasterProgram()
 	bForceNextFrameRender = false;
 
 	//Programs
-	AllBadgePrograms.push_back(new RasterBadge());
-	AllBadgePrograms.push_back(new PulexBadge());
-	AllBadgePrograms.push_back(new BasicBadge("KBadge.png"));
-	CurrentProgramIndex = 0;
-	CurrentProgram = &bpe;
-	bpe.SetProgram(AllBadgePrograms[0]);
+	BadgePrograms.Programs.push_back(new RasterBadge());
+	BadgePrograms.Programs.push_back(new PulexBadge());
+	BadgePrograms.Programs.push_back(new BasicBadge("KBadge.png"));
+
+	//Post Effects
+	PostPrograms.Programs.push_back(new RTPassthroughPPE());
+
+	auto* program = BadgePrograms.AdvanceProgram();
+	auto* post = PostPrograms.AdvanceProgram();
+
+	CurrentProgram = post;
+	post->SetProgram(program);
 }
 
 RasterProgram::~RasterProgram()
 {
-	for (auto* item : AllBadgePrograms)
-		delete item;
-	AllBadgePrograms.empty();
+	
 }
 
 void RasterProgram::HandleClick(float x, float y)
@@ -30,16 +34,16 @@ void RasterProgram::HandleClick(float x, float y)
 		switch (i)
 		{
 		case 0:
-			PreviousProgram();
+			SetPrograms(PostPrograms.GetCurrentProgram(),BadgePrograms.PreviousProgram());
 			break;
 		case 1:
-			AdvanceProgram();
+			SetPrograms(PostPrograms.GetCurrentProgram(), BadgePrograms.AdvanceProgram());
 			break;
 		case 2:
-			PreviousProgram();
+			SetPrograms(PostPrograms.PreviousProgram(), BadgePrograms.GetCurrentProgram());
 			break;
 		case 3:
-			AdvanceProgram();
+			SetPrograms(PostPrograms.AdvanceProgram(), BadgePrograms.GetCurrentProgram());
 			break;
 		default:
 			break;
