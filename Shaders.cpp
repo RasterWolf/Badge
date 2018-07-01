@@ -21,6 +21,7 @@ void ShaderPrograms::InitShaderPrograms()
 	{ FS_ImageBox,VS_ImageBox },
 	{ FS_TvDistortion,VS_FullScreen },
 	{ FS_Chromatical,VS_FullScreen },
+	{ FS_GreenTV,VS_FullScreen },
 	};
 
 	for(int i = 0 ; i < SP_MAX ; ++i)

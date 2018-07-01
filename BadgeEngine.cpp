@@ -116,6 +116,19 @@ void BadgeEngine::MainLoop()
 				//HandleLeftClick(0.14f, 0.46f);
 			}
 
+			if (event.type == SDL_FINGERDOWN)
+			{
+				if (event.tfinger.pressure >= 0.1)
+				{
+					float fx = event.tfinger.x / (float)WindowWidth;
+					float fy = event.tfinger.y / (float)WindowHeight;
+					std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
+					HandleLeftClick(fx, fy);
+				}
+				
+			}
+
+
 			if (event.type == SDL_KEYDOWN && event.key.state == SDL_PRESSED && event.key.repeat == 0)
 			{
 				unsigned char c = tolower(SDL_GetKeyName(event.key.keysym.sym)[0]);

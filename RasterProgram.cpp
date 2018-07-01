@@ -15,6 +15,7 @@ RasterProgram::RasterProgram()
 	PostPrograms.Programs.push_back(new RTPassthroughPPE());
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_TvDistortion));
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Chromatical));
+	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_GreenTV));
 
 
 	auto* program = BadgePrograms.AdvanceProgram();

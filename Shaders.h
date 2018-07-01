@@ -13,6 +13,7 @@ enum ShaderProgram
 	SP_ImageBox,
 	SP_TvDistortion,
 	SP_Chromatical,
+	SP_GreenTV,
 	SP_MAX
 };
 
@@ -126,6 +127,7 @@ enum FragmentShaderProgram
 	FS_ImageBox,
 	FS_TvDistortion,
 	FS_Chromatical,
+	FS_GreenTV,
 	FS_MAX
 };
 
@@ -139,6 +141,7 @@ public:
 		ShaderFiles[FS_ImageBox] = "ImageBoxFS.glsl";
 		ShaderFiles[FS_TvDistortion] = "TvDistortion.glsl";
 		ShaderFiles[FS_Chromatical] = "ChromaticalFS.glsl";
+		ShaderFiles[FS_GreenTV] = "BadTvFS.glsl";
 	}
 	static constexpr GLenum GetShaderPipeline() 
 	{
