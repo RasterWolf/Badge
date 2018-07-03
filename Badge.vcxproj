@@ -178,16 +178,15 @@
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BadTvFS.glsl" />
-    <None Include="commands" />
-    <None Include="FullScreenFS.glsl" />
-    <None Include="FullScreenVS.glsl" />
-    <None Include="ImageBoxFS.glsl" />
-    <None Include="ImageBoxVS.glsl" />
+    <None Include="content\BadTvFS.glsl" />
+    <None Include="content\ChromaticalFS.glsl" />
+    <None Include="content\FullScreenFS.glsl" />
+    <None Include="content\FullScreenVS.glsl" />
+    <None Include="content\ImageBoxFS.glsl" />
+    <None Include="content\ImageBoxVS.glsl" />
+    <None Include="content\TvDistortion.glsl" />
     <None Include="Makefile" />
     <None Include="SConstruct" />
-    <None Include="TvDistortion.glsl" />
-    <None Include="ChromaticalFS.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

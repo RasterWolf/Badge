@@ -94,31 +94,28 @@
     <None Include="SConstruct">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="FullScreenFS.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="FullScreenVS.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="ImageBoxFS.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="ImageBoxVS.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Makefile">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="TvDistortion.glsl">
+    <None Include="content\BadTvFS.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="ChromaticalFS.glsl">
+    <None Include="content\ChromaticalFS.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="BadTvFS.glsl">
+    <None Include="content\FullScreenFS.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="commands">
+    <None Include="content\FullScreenVS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="content\ImageBoxFS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="content\ImageBoxVS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="content\TvDistortion.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

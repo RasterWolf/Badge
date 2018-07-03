@@ -30,7 +30,7 @@ public:
 			//Read the file
 			std::ifstream file;
 			char FilePath[512] = { 0 };
-			sprintf(FilePath, "%s%s", AppPath, ShaderFiles[i].c_str());
+			sprintf(FilePath, "%s%s%s", AppPath,"content/", ShaderFiles[i].c_str());
 
 			file.open(FilePath, std::ifstream::in);
 
