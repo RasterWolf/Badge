@@ -25,6 +25,7 @@ public:
 	int GetWidth() const { return WindowWidth;  }
 	int GetHeight() const { return WindowHeight;  }
 	float GetTimeSeconds() const;
+	const char* GetPath() const;
 
 	bool InnerMainLoop(bool bForceDraw);
 

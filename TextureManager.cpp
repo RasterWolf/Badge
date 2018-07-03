@@ -63,10 +63,12 @@ BadgeImage ReadTextureFromFile(const char* file)
 
 
 
+#include "Constant.h"
 
 void TextureManager::InitTextureManager()
 {
-	DIR *dir = opendir ("./");
+	DIR *dir = opendir (AppPath);
+	char FullFileName[512] = { 0 };
 	struct dirent *ent;
 	if (dir != nullptr) 
 	{
@@ -81,7 +83,8 @@ void TextureManager::InitTextureManager()
 
 	  	if(IsImageFile)
 		{
-			LoadedTextures[std::string(ent->d_name)] = ReadTextureFromFile(ent->d_name);;
+			sprintf(FullFileName, "%s%s", AppPath, ent->d_name);
+			LoadedTextures[std::string(ent->d_name)] = ReadTextureFromFile(FullFileName);;
 		}
 	    //printf ("%s\n", ent->d_name);
 	  }

@@ -1,10 +1,10 @@
 #pragma once
 #include <string.h>
 #include <fstream>
-#include "MyGL.h"
 #include <iostream>
 
 #include "MyGL.h"
+#include "Constant.h"
 
 
 enum ShaderProgram
@@ -29,7 +29,10 @@ public:
 
 			//Read the file
 			std::ifstream file;
-			file.open(ShaderFiles[i], std::ifstream::in);
+			char FilePath[512] = { 0 };
+			sprintf(FilePath, "%s%s", AppPath, ShaderFiles[i].c_str());
+
+			file.open(FilePath, std::ifstream::in);
 
 			bool b = file.is_open();
 
