@@ -1,1 +1,0 @@
-sudo apt-get install cmake clang libsdl2-dev libglew-dev scons libglm-dev freeglut3-dev libsdl2-image-dev
