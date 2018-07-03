@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BadTvFS.glsl" />
+    <None Include="commands" />
     <None Include="FullScreenFS.glsl" />
     <None Include="FullScreenVS.glsl" />
     <None Include="ImageBoxFS.glsl" />

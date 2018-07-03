@@ -1,8 +1,5 @@
 from os import environ
 
-VariantDir('build/src', 'src', duplicate=0)
-VariantDir('build/lib', 'lib', duplicate=0)
-
 flags = ['-O3', '-std=c++14']
 #'-march=native'
 
