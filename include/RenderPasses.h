@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "StaticGeo.h"
 #include "TextureManager.h"
-#include "Math.h"
+#include "glmMath.h"
 #include "RenderTarget.h"
 
 class RenderPasses

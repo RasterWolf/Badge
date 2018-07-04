@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <string.h>
-#include "Math.h"
+#include "glmMath.h"
 #include "TextureManager.h"
 
 class Actor

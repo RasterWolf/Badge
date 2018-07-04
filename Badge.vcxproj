@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Dev\glm-master;C:\Dev\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\glm-master;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(ProjectDir)include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Dev\glm-master;C:\Dev\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\glm-master;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(ProjectDir)include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Dev\glm-master;C:\Dev\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\glm-master;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(ProjectDir)include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Dev\glm-master;C:\Dev\freeglut-MSVC-3.0.0-2.mp\freeglut\include;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\glm-master;C:\Dev\SDL2-2.0.8\include\;C:\Dev\include;C:\Dev\glew-2.1.0\include;$(ProjectDir)include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -150,34 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BadgeEngine.cpp" />
-    <ClCompile Include="BadgePrograms.cpp" />
-    <ClCompile Include="BasicActors.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="PostEffects.cpp" />
-    <ClCompile Include="RasterProgram.cpp" />
-    <ClCompile Include="RenderPasses.cpp" />
-    <ClCompile Include="RenderTarget.cpp" />
-    <ClCompile Include="Shaders.cpp" />
-    <ClCompile Include="StaticGeo.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BadgeEngine.h" />
-    <ClInclude Include="BadgePrograms.h" />
-    <ClInclude Include="BasicActors.h" />
-    <ClInclude Include="Constant.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="MyGL.h" />
-    <ClInclude Include="PostEffects.h" />
-    <ClInclude Include="RasterProgram.h" />
-    <ClInclude Include="RenderPasses.h" />
-    <ClInclude Include="RenderTarget.h" />
-    <ClInclude Include="Shaders.h" />
-    <ClInclude Include="StaticGeo.h" />
-    <ClInclude Include="TextureManager.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="content\BadTvFS.glsl" />
     <None Include="content\ChromaticalFS.glsl" />
     <None Include="content\FullScreenFS.glsl" />
@@ -187,6 +159,34 @@
     <None Include="content\TvDistortion.glsl" />
     <None Include="Makefile" />
     <None Include="SConstruct" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\BadgeEngine.cpp" />
+    <ClCompile Include="src\BadgePrograms.cpp" />
+    <ClCompile Include="src\BasicActors.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PostEffects.cpp" />
+    <ClCompile Include="src\RasterProgram.cpp" />
+    <ClCompile Include="src\RenderPasses.cpp" />
+    <ClCompile Include="src\RenderTarget.cpp" />
+    <ClCompile Include="src\Shaders.cpp" />
+    <ClCompile Include="src\StaticGeo.cpp" />
+    <ClCompile Include="src\TextureManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BadgeEngine.h" />
+    <ClInclude Include="include\BadgePrograms.h" />
+    <ClInclude Include="include\BasicActors.h" />
+    <ClInclude Include="include\Constant.h" />
+    <ClInclude Include="include\glmMath.h" />
+    <ClInclude Include="include\MyGL.h" />
+    <ClInclude Include="include\PostEffects.h" />
+    <ClInclude Include="include\RasterProgram.h" />
+    <ClInclude Include="include\RenderPasses.h" />
+    <ClInclude Include="include\RenderTarget.h" />
+    <ClInclude Include="include\Shaders.h" />
+    <ClInclude Include="include\StaticGeo.h" />
+    <ClInclude Include="include\TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
