@@ -11,7 +11,8 @@ Build Sytem Linux:
 SConstruct build system. It will have a makefile in the future. 
 
 Build System Windows:
-Visual Studio 2017 Community edition. Please note that you have to set up the C++ directories in the solution. I have moved include files to mimic the file structure in linux. Currently tested in x86, I don't know if x64 works. 
+Visual Studio 2017 Community edition. Please note that you have to set up the C++ directories in the solution. 
+I have moved include files to mimic the file structure in linux. Currently tested in x86, I don't know if x64 works. 
 
 Getting this up and running will require C++ and linux knowledge. 
 
