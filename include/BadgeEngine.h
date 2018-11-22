@@ -36,6 +36,7 @@ private:
 	bool bIsInitialized = false;
 	BadgeProgram* RunningProgram = nullptr;
 	unsigned int LastRenderTime = 0;
+	unsigned int LastBatteryCheck = 0;
 	int WindowWidth;
 	int WindowHeight;
 

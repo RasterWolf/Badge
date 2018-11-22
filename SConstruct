@@ -12,7 +12,7 @@ env = Environment(ENV       = environ,
                   LINKFLAGS = flags,
                   CPPPATH   = ['/opt/vc/include/','/opt/vc/include/interface/vcos/pthreads','/opt/vc/include/interface/vmcs_host/linux','./include'],
                   LIBPATH	= ['/opt/vc/lib/'],
-				  LIBS      = ['SDL2', 'SDL2_image','brcmGLESv2', 'brcmEGL', 'openmaxil' ,'bcm_host', 'vcos', 'vchiq_arm', 'pthread', 'rt', 'm'],
+				  LIBS      = ['SDL2', 'SDL2_image','brcmGLESv2', 'brcmEGL', 'openmaxil' ,'bcm_host', 'vcos', 'vchiq_arm', 'pthread', 'rt', 'm','wiringPi'],
 				  CPPDEFINES= ['HAVE_LIBBCM_HOST','USE_EXTERNAL_LIBBCM_HOST','USE_VCHIQ_ARM'])
                   
 

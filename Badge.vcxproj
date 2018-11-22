@@ -164,6 +164,7 @@
     <ClCompile Include="src\BadgeEngine.cpp" />
     <ClCompile Include="src\BadgePrograms.cpp" />
     <ClCompile Include="src\BasicActors.cpp" />
+    <ClCompile Include="src\GpioControls.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PostEffects.cpp" />
     <ClCompile Include="src\RasterProgram.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="include\BasicActors.h" />
     <ClInclude Include="include\Constant.h" />
     <ClInclude Include="include\glmMath.h" />
+    <ClInclude Include="include\GpioControls.h" />
     <ClInclude Include="include\MyGL.h" />
     <ClInclude Include="include\PostEffects.h" />
     <ClInclude Include="include\RasterProgram.h" />

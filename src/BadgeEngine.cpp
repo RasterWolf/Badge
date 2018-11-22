@@ -8,6 +8,10 @@
 #include "TextureManager.h"
 #include "Constant.h"
 #include "RenderTarget.h"
+#include "GpioControls.h"
+#if !defined(_MSC_VER)
+#include <unistd.h>
+#endif
 
 BadgeEngine GEngine;
 SDL_Window *window;
@@ -70,6 +74,13 @@ void BadgeEngine::Initialize()
 	TextureManager::InitTextureManager();
 	GUnitCube = new UnitCubeGeo();
 	GRenderTargets = new RenderTargetFlipFlop();
+	GpioControls::InitGpioControls();
+
+#if !defined(_MSC_VER)
+	char* path = const_cast<char*>(&AppPath[0]);
+	getcwd(path, 512);
+	std::cout << path << std::endl;
+#endif
 
 
 	bIsInitialized = true;
@@ -199,6 +210,16 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 {
 	unsigned int Start = SDL_GetTicks();
 	bool draw = bForceDraw;
+
+	bool bCheckBattery = LastBatteryCheck == 0 || ((Start - LastBatteryCheck) > 60 * 1000);
+	if (bCheckBattery)
+	{
+		if (GpioControls::CheckLowBattery())
+		{
+			GpioControls::Shutdown();
+		}
+		LastBatteryCheck = Start;
+	}
 	
 	if (RunningProgram)
 	{

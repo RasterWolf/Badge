@@ -1,4 +1,5 @@
 #include "RasterProgram.h"
+#include "GpioControls.h"
 
 //Main Badge Program
 
@@ -30,18 +31,26 @@ RasterProgram::~RasterProgram()
 	
 }
 
+const float BrightnessValues[] = { 1.0,0.5f,0.4f,0.1f };
+const int nBrightness = sizeof(BrightnessValues) / sizeof(float);
+int brightnessIndex = 0;
+
 void RasterProgram::HandleClick(float x, float y)
 {
+	
 	int i = UpdateInvisibleButtonClick(x, y);
 	if (i != -1)
 	{
 		switch (i)
 		{
 		case 0:
-			SetPrograms(PostPrograms.GetCurrentProgram(),BadgePrograms.PreviousProgram());
+			//SetPrograms(PostPrograms.GetCurrentProgram(),BadgePrograms.PreviousProgram());
+			exit(0);
 			break;
 		case 1:
-			SetPrograms(PostPrograms.GetCurrentProgram(), BadgePrograms.AdvanceProgram());
+			//SetPrograms(PostPrograms.GetCurrentProgram(), BadgePrograms.AdvanceProgram());
+			brightnessIndex = (brightnessIndex + 1) % nBrightness;
+			GpioControls::SetBrightness(BrightnessValues[brightnessIndex]);
 			break;
 		case 2:
 			SetPrograms(PostPrograms.PreviousProgram(), BadgePrograms.GetCurrentProgram());

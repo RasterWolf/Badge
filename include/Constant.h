@@ -7,5 +7,5 @@
 #if _MSC_VER
 static const char* AppPath = "./";
 #else
-static const char* AppPath = "/home/pi/Desktop/badge/";
+const char AppPath[512] = { 0 };
 #endif
