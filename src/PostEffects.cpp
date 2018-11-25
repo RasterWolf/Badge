@@ -83,7 +83,7 @@ void STPostEffect::Render(float delta)
 		if (timeParameter >= 0)
 			glUniform1f(timeParameter, GEngine.GetTimeSeconds());
 		if (resolutionParameter >= 0)
-			glUniform2i(resolutionParameter, GEngine.GetWidth(), GEngine.GetHeight());
+			glUniform2f(resolutionParameter, (float)GEngine.GetWidth(), (float)GEngine.GetHeight());
 
 		for (int i = 0; i < NumChannels; i++)
 		{

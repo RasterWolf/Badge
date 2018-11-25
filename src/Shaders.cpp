@@ -22,6 +22,9 @@ void ShaderPrograms::InitShaderPrograms()
 	{ FS_TvDistortion,VS_FullScreen },
 	{ FS_Chromatical,VS_FullScreen },
 	{ FS_GreenTV,VS_FullScreen },
+	{ FS_Sketch, VS_FullScreen }
+	,{ FS_Sketch2, VS_FullScreen }
+	,{ FS_Fractal, VS_FullScreen }
 	};
 
 	for(int i = 0 ; i < SP_MAX ; ++i)

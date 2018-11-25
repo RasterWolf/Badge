@@ -14,6 +14,9 @@ enum ShaderProgram
 	SP_TvDistortion,
 	SP_Chromatical,
 	SP_GreenTV,
+	SP_Sketch,
+	SP_Sketch2,
+	SP_Fractal,
 	SP_MAX
 };
 
@@ -131,6 +134,9 @@ enum FragmentShaderProgram
 	FS_TvDistortion,
 	FS_Chromatical,
 	FS_GreenTV,
+	FS_Sketch,
+	FS_Sketch2,
+	FS_Fractal,
 	FS_MAX
 };
 
@@ -145,6 +151,10 @@ public:
 		ShaderFiles[FS_TvDistortion] = "TvDistortion.glsl";
 		ShaderFiles[FS_Chromatical] = "ChromaticalFS.glsl";
 		ShaderFiles[FS_GreenTV] = "BadTvFS.glsl";
+		ShaderFiles[FS_Sketch] = "Sketch.glsl";
+		ShaderFiles[FS_Sketch2] = "Sketch2.glsl";
+		ShaderFiles[FS_Fractal] = "fractal.glsl";
+
 	}
 	static constexpr GLenum GetShaderPipeline() 
 	{

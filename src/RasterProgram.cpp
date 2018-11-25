@@ -3,7 +3,8 @@
 
 //Main Badge Program
 
-RasterProgram::RasterProgram()
+RasterProgram::RasterProgram() : 
+	ButtonClickCount()
 {
 	bForceNextFrameRender = false;
 
@@ -17,6 +18,9 @@ RasterProgram::RasterProgram()
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_TvDistortion));
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Chromatical));
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_GreenTV));
+	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Sketch));
+	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Sketch2));
+	//PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Fractal));
 
 
 	auto* program = BadgePrograms.AdvanceProgram();

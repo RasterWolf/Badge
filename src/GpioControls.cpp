@@ -62,12 +62,16 @@ void GpioControls::SetBrightness(float brightness)
 
 bool GpioControls::CheckLowBattery()
 {
-	return digitalRead(LowBatPin) == 0;
+	return false;
+	//return digitalRead(LowBatPin) == 0;
 }
 
 void GpioControls::Shutdown()
 {
 	//exit(0);
-	system("shutdown -P now");
+	//system("shutdown -P now");
+
+	//rfkill block all
+	//rfkill unblock all
 }
 #endif

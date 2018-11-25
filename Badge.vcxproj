@@ -152,10 +152,13 @@
   <ItemGroup>
     <None Include="content\BadTvFS.glsl" />
     <None Include="content\ChromaticalFS.glsl" />
+    <None Include="content\fractal.glsl" />
     <None Include="content\FullScreenFS.glsl" />
     <None Include="content\FullScreenVS.glsl" />
     <None Include="content\ImageBoxFS.glsl" />
     <None Include="content\ImageBoxVS.glsl" />
+    <None Include="content\Sketch.glsl" />
+    <None Include="content\Sketch2.glsl" />
     <None Include="content\TvDistortion.glsl" />
     <None Include="Makefile" />
     <None Include="SConstruct" />

@@ -2,6 +2,7 @@
 precision mediump float;
 
 uniform float iTime;
+uniform vec2 iResolution;
 uniform sampler2D iChannel0;
 varying vec2 TexCoord;
 //out vec4 outColor;
@@ -82,12 +83,16 @@ float staticV(vec2 uv) {
 	return (1.0-step(snoise(vec2(5.0*pow(iTime,2.0)+pow(uv.x*7.0,1.2),pow((mod(iTime,100.0)+100.0)*uv.y*0.3+3.0,staticHeight))),staticAmount))*staticStrength;
 }
 
+float rand(vec2 co)
+{
+   return fract(sin(dot(co.xy,vec2(12.9898,78.233))) * 43758.5453);
+}
 
 void main()
 {
-	
 	vec2 uv =  TexCoord.xy; //fragCoord.xy/iResolution.xy;
-	
+	vec2 fragCoord = TexCoord.xy * iResolution.xy;
+	#if 0
 	float jerkOffset = (1.0-step(snoise(vec2(iTime*1.3,5.0)),0.8))*0.05;
 	
 	float fuzzOffset = snoise(vec2(iTime*15.0,uv.y*80.0))*0.003;
@@ -104,11 +109,11 @@ void main()
     
     float staticVal = 0.0;
    
-    for (float y = -1.0; y <= 1.0; y += 1.0) {
+    /*for (float y = -1.0; y <= 1.0; y += 1.0) {
         float maxDist = 5.0/200.0;
         float dist = y/200.0;
     	staticVal += staticV(vec2(uv.x,uv.y+dist))*(maxDist-abs(dist))*1.5;
-    }
+    }*/
         
     staticVal *= bottomStaticOpt;
 	
@@ -121,5 +126,33 @@ void main()
 	color -= scanline;
 	
 	gl_FragColor = vec4(color,1.0);
+	#else
+	float time = iTime * 1.0;
+    
+    // Create large, incidental noise waves
+    float noise = max(0.0, snoise(vec2(time, uv.y * 0.3)) - 0.3) * (1.0 / 0.7);
+    
+    // Offset by smaller, constant noise waves
+    noise = noise + (snoise(vec2(time*10.0, uv.y * 2.4)) - 0.5) * 0.15;
+    
+    // Apply the noise as x displacement for every line
+    float xpos = uv.x - noise * noise * 0.25;
+	vec4 fragColor = texture2D(iChannel0, vec2(xpos, uv.y));
+    
+    // Mix in some random interference for lines
+    fragColor.rgb = mix(fragColor.rgb, vec3(rand(vec2(uv.y * time))), noise * 0.3).rgb;
+    
+    // Apply a line pattern every 4 pixels
+    if (floor(mod(fragCoord.y * 0.25, 2.0)) == 0.0)
+    {
+        fragColor.rgb *= 1.0 - (0.15 * noise);
+    }
+    
+    // Shift green/blue channels (using the red channel)
+    fragColor.g = mix(fragColor.r, texture2D(iChannel0, vec2(xpos + noise * 0.05, uv.y)).g, 0.25);
+    fragColor.b = mix(fragColor.r, texture2D(iChannel0, vec2(xpos - noise * 0.05, uv.y)).b, 0.25);
+	gl_FragColor = vec4(fragColor.rgb,1.0);
+
+	#endif
 	
 }
