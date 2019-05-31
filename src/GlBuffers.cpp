@@ -79,6 +79,7 @@ GlIndexBuffer::~GlIndexBuffer()
 	;
 }
 
+#if _MSC_VER
 
 //GL VAO
 GlVertexBufferNext::GlVertexBufferNext()
@@ -104,3 +105,4 @@ void GlVertexBufferNext::Unbind() const
 	glBindVertexArray(-1);
 	GL_ASSERT;
 }
+#endif
