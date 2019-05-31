@@ -15,7 +15,10 @@
 #if 0
 #include <cassert>
 #include <iostream>
-#define GL_ASSERT {GLenum err = glGetError(); if(err != GL_NO_ERROR){std::cout<<"GL error: " << err << " Function: " << __FUNCTION__ <<std::endl; exit(0);}} 
+#define GL_ASSERT {GLenum err = glGetError(); if(err != GL_NO_ERROR){std::cout<<"GL error: " << err << " Function: " << __FUNCTION__ <<std::endl; exit(0);}}
+//void funcAssert();
+//#define GL_ASSERT funcAssert();
+
 #else
 #define GL_ASSERT
 #endif

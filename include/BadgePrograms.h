@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "BasicActors.h"
 #include "glmMath.h"
+#include "ObjModel.h"
 #include <list>
 #include <vector>
 
@@ -128,13 +129,8 @@ public:
 class RasterBadge : public BadgeProgram
 {
 public:
-	RasterBadge()
-		: ImageIndex(0)
-	{
-		BadgeFrames[0] = TextureManager::GetTexture("RasterBadge.png");
-		BadgeFrames[1] = TextureManager::GetTexture("RasterBadge2.png");
-	}
-	~RasterBadge(){;}
+	RasterBadge();
+	~RasterBadge() { ; }
 	void HandleClick(float x, float y) override;
 	void Render(float delta) override;
 	bool Integrate(float delta) override;
@@ -143,6 +139,7 @@ private:
 	static glm::vec2 NoseSize;
 	TempImageComponent<BoopActor> tiComponent;
 	BadgeImage BadgeFrames[2];
+	ModelActor model;
 	int ImageIndex;
 };
 

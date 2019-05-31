@@ -164,6 +164,8 @@
     <None Include="SConstruct" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GlBuffers.cpp" />
+    <ClCompile Include="src\ObjModel.cpp" />
     <ClCompile Include="src\BadgeEngine.cpp" />
     <ClCompile Include="src\BadgePrograms.cpp" />
     <ClCompile Include="src\BasicActors.cpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="include\BadgePrograms.h" />
     <ClInclude Include="include\BasicActors.h" />
     <ClInclude Include="include\Constant.h" />
+    <ClInclude Include="include\GLBuffers.h" />
     <ClInclude Include="include\glmMath.h" />
     <ClInclude Include="include\GpioControls.h" />
     <ClInclude Include="include\MyGL.h" />
@@ -192,6 +195,8 @@
     <ClInclude Include="include\Shaders.h" />
     <ClInclude Include="include\StaticGeo.h" />
     <ClInclude Include="include\TextureManager.h" />
+    <ClInclude Include="include\ObjModel.h" />
+    <ClInclude Include="include\Vectors.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

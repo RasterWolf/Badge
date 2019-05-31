@@ -85,6 +85,27 @@ void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& Ob
 
 }
 
+void RenderPasses::RenderObj(const ObjModel & model, const BadgeImage& Texture, const glm::mat4 & ObjectMatrix)
+{
+	auto programid = ShaderPrograms::SetProgram(SP_ImageBox);
+
+	glm::mat4 ViewProjection = glm::ortho(0.0f, (float)SIZE_X, 0.0f, (float)SIZE_Y, 0.1f, 100.0f); //TODO
+	ViewProjection = glm::translate(ViewProjection, glm::vec3(0.0f, 0.0f, -1.0f));
+
+	static GLuint ObjectMatrixId = glGetUniformLocation(programid, "Transform");
+	static GLuint ProjectionMatrixId = glGetUniformLocation(programid, "Projection");
+	static GLuint colorModId = glGetUniformLocation(programid, "ColorMod");
+
+	glUniformMatrix4fv(ObjectMatrixId, 1, GL_FALSE, glm::value_ptr(ObjectMatrix));
+	glUniformMatrix4fv(ProjectionMatrixId, 1, GL_FALSE, glm::value_ptr(ViewProjection));
+	glUniform3f(colorModId, 1.0f, 1.0f, 1.0f);
+
+	glBindTexture(GL_TEXTURE_2D, Texture.TextureId);
+	glDisable(GL_CULL_FACE);
+	model.Draw();
+	GL_ASSERT;
+}
+
 void RenderPasses::CheckForError()
 {
 	GLenum err = glGetError();

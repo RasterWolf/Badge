@@ -22,7 +22,7 @@ void GpioControls::SetBrightness(float brightness)
 
 bool GpioControls::CheckLowBattery()
 {
-	return true;
+	return false;
 }
 
 void GpioControls::Shutdown()
@@ -37,6 +37,8 @@ void GpioControls::Shutdown()
 char Buffer[512] = { 0 };
 void GpioControls::InitGpioControls()
 {
+	system("touch powerOn");
+	system("rfkill block all");
 	wiringPiSetup();
 	//pinMode(BrightnessPin, PWM_OUTPUT);
 	sprintf(Buffer, "gpio mode %d pwm", BrightnessPin);
@@ -63,12 +65,14 @@ void GpioControls::SetBrightness(float brightness)
 bool GpioControls::CheckLowBattery()
 {
 	return false;
-	//return digitalRead(LowBatPin) == 0;
+	//return digitalRead(LowBatPin) != 0;
 }
 
 void GpioControls::Shutdown()
 {
 	//exit(0);
+	system("rfkill unblock wifi");
+	system("touch powerOff");
 	//system("shutdown -P now");
 
 	//rfkill block all

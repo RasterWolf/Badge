@@ -13,6 +13,18 @@
 #include <unistd.h>
 #endif
 
+//void funcAssert()
+//{
+//	GLenum err = glGetError();
+//	if (err != GL_NO_ERROR)
+//	{
+//		std::cout << "GL error: " << err << " Function: " << __FUNCTION__ << std::endl; 
+//		
+//		__debugbreak();
+//		exit(0);
+//	}
+//}
+
 BadgeEngine GEngine;
 SDL_Window *window;
 
@@ -54,10 +66,11 @@ void BadgeEngine::Initialize()
 	);
 
 #if _MSC_VER
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 	SDL_GLContext glcontext = SDL_GL_CreateContext(window);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-
+	SDL_GetError();
+	GL_ASSERT;
 	SDL_GL_SetSwapInterval(1);
 	checkSDLError(__LINE__);
 #endif
@@ -71,9 +84,17 @@ void BadgeEngine::Initialize()
 
 
 	ShaderPrograms::InitShaderPrograms();
+	GL_ASSERT;
+
 	TextureManager::InitTextureManager();
+	GL_ASSERT;
+
 	GUnitCube = new UnitCubeGeo();
+	GL_ASSERT;
+
 	GRenderTargets = new RenderTargetFlipFlop();
+	GL_ASSERT;
+
 	GpioControls::InitGpioControls();
 
 #if !defined(_MSC_VER)

@@ -89,6 +89,12 @@
     <ClCompile Include="src\GpioControls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ObjModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GlBuffers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BadgeEngine.h">
@@ -131,6 +137,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GpioControls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ObjModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vectors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GLBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

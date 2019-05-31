@@ -40,41 +40,36 @@ unsigned int indices[] = {  // note that we start from 0!
 
 UnitCubeGeo::UnitCubeGeo()
 {
-	PositionAttrib = ShaderPrograms::GetVertexAttrib(ShaderProgram::SP_FullScreen, "aPos");
-	TexAttrib = ShaderPrograms::GetVertexAttrib(ShaderProgram::SP_FullScreen, "aTexCoord");
+	unsigned int PositionAttrib = ShaderPrograms::GetVertexAttrib(ShaderProgram::SP_FullScreen, "aPos");
+	unsigned int TexAttrib = ShaderPrograms::GetVertexAttrib(ShaderProgram::SP_FullScreen, "aTexCoord");
 
 	std::cout << "Creating Unit Cube with Pos in: " << PositionAttrib << std::endl;
 	std::cout << "Creating Unit Cube with tex in: " << TexAttrib << std::endl;
 
-	glGenBuffers(1,&VertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+	const auto VBSize = sizeof(vertices2);
+	const auto stride = sizeof(float) * 5;
+	const auto TexOffset = sizeof(float) * 3;
+	
 
-	glGenBuffers(1, &IndexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	VertexBuffer.InitData((void*)&vertices2[0], VBSize);
+	GlVbAttrib Atrribs[] = {{ PositionAttrib ,3	,stride ,0 },
+							{ TexAttrib		 ,2	,stride,(void*)TexOffset} };
 
-    glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
-	glVertexAttribPointer(PositionAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(PositionAttrib);
-	glVertexAttribPointer(TexAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(sizeof(float)*3));
-	glEnableVertexAttribArray(TexAttrib);
+	VertexBuffer.AddAttrib(Atrribs[0]);
+	VertexBuffer.AddAttrib(Atrribs[1]);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
+	IndexBuffer.InitData(indices, sizeof(indices));
 }
 
 UnitCubeGeo::~UnitCubeGeo()
 {
-	glDeleteBuffers(1,&VertexBuffer);
-	glDeleteBuffers(1,&IndexBuffer);
 }
 
 void UnitCubeGeo::Draw(bool bInvert) const
 {
-	//glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
+	VertexBuffer.Bind();
+	IndexBuffer.Bind();
 
-	//glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
 	if (!bInvert)
 	{
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
@@ -84,5 +79,4 @@ void UnitCubeGeo::Draw(bool bInvert) const
 		glDrawArrays(GL_TRIANGLE_STRIP, 6, 6);
 
 	}
-	GL_ASSERT; 
 }

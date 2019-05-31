@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "glmMath.h"
 #include "RenderTarget.h"
+#include "ObjModel.h"
 
 class RenderPasses
 {
@@ -12,6 +13,7 @@ public:
 	void RenderFullScreen(unsigned int Texture);
 	void RenderFullScreenInverted(unsigned int Texture);
 	void RenderImageBox(const BadgeImage& Texture , const glm::mat4& ObjectMatrix, bool EnableAlpha = false, const glm::vec3& colorMod = glm::vec3(1.0f));
+	void RenderObj(const ObjModel& model, const BadgeImage& Texture, const glm::mat4& ObjectMatrix);
 	void InitGL();
 	void DestroyGL();
 	void CheckForError();

@@ -41,6 +41,22 @@ bool TempImageActor::Integrate(float tick)
 glm::vec2 RasterBadge::NoseMin = glm::vec2(0.14f, 0.46f);
 glm::vec2 RasterBadge::NoseSize = glm::vec2(0.19f, 0.1);
 
+RasterBadge::RasterBadge()
+	: ImageIndex(0),
+	model("Content\\Mesh.obj")
+{
+	BadgeFrames[0] = TextureManager::GetTexture("RasterBadge.png");
+	BadgeFrames[1] = TextureManager::GetTexture("RasterBadge2.png");
+
+	//model setup;
+	const float scale = 100.5f;
+	model.Rotation = 90.0f;
+	model.Scale = glm::vec3(-109.0f, 96.5f, 1.0f);
+	model.Position.x = SIZE_X * 0.5f;
+	model.Position.y = SIZE_Y * 0.5f;
+	model.RotationAxis = glm::vec3(0, 1.0f, 0);
+}
+
 void RasterBadge::HandleClick(float x, float y)
 {
 	if (x >= NoseMin.x && x <= NoseMin.x + NoseSize.x &&
@@ -59,7 +75,8 @@ void RasterBadge::HandleClick(float x, float y)
 			ry = lerp(HalfY, SIZE_Y - HalfY, ry);
 
 			bp->Init(glm::vec2(rx, ry));
-			bp->Scale = 0.5;
+			bp->Scale.x = 0.5f;
+			bp->Scale.y = 0.5f;
 		}
 	}
 }
@@ -67,6 +84,9 @@ void RasterBadge::HandleClick(float x, float y)
 void RasterBadge::Render(float delta)
 {
 	GRenderPasses->RenderFullScreen(BadgeFrames[tiComponent.HasActors()?1:0]);
+	
+	//GRenderPasses->RenderObj(*model.objModel, BadgeFrames[0], model.ApplyTransform());
+
 	tiComponent.Render(delta);
 }
 
@@ -102,7 +122,8 @@ void PulexBadge::HandleClick(float x, float y)
 			ry = lerp(HalfY, SIZE_Y - HalfY, ry);
 
 			bp->Init(glm::vec2(rx, ry));
-			bp->Scale = 0.5;
+			bp->Scale.x = 0.5f;
+			bp->Scale.y = 0.5f;
 
 			//Change the color
 			const int MaxColors = sizeof(HeartColors) / sizeof(glm::vec3);
