@@ -82,11 +82,15 @@ void BadgeEngine::Initialize()
 
 	glViewport(0, 0, WindowWidth, WindowHeight);
 
-
+	std::cout << "Loading shaders..." << std::endl;
 	ShaderPrograms::InitShaderPrograms();
+	std::cout << "Shaders Loaded." << std::endl;
+
 	GL_ASSERT;
 
+	std::cout << "Loading Textures..." << std::endl;
 	TextureManager::InitTextureManager();
+	std::cout << "Textures Loaded" << std::endl;
 	GL_ASSERT;
 
 	GUnitCube = new UnitCubeGeo();

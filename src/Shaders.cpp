@@ -15,20 +15,25 @@ void ShaderPrograms::InitShaderPrograms()
 	{
 		FragmentShaderProgram 	FragmentShader;
 		VertexShaderProgram		VertexShader;
+		bool					bEnable;
 	};
 
-	ProgramDef ProgramDefinitions[] = { {FS_FullScreen,VS_FullScreen},
-	{ FS_ImageBox,VS_ImageBox },
-	{ FS_TvDistortion,VS_FullScreen },
-	{ FS_Chromatical,VS_FullScreen },
-	{ FS_GreenTV,VS_FullScreen },
-	{ FS_Sketch, VS_FullScreen }
-	,{ FS_Sketch2, VS_FullScreen }
-	,{ FS_Fractal, VS_FullScreen }
+	ProgramDef ProgramDefinitions[] = { {FS_FullScreen,VS_FullScreen,true},
+	{ FS_ImageBox,VS_ImageBox ,true},
+	{ FS_TvDistortion,VS_FullScreen,true },
+	{ FS_Chromatical,VS_FullScreen,true },
+	{ FS_GreenTV,VS_FullScreen,true },
+	{ FS_Sketch, VS_FullScreen ,true}
+	,{ FS_Sketch2, VS_FullScreen,true }
+	,{ FS_Fractal, VS_FullScreen,false } //this fractal shader is killing the compiler on the pi.
 	};
 
 	for(int i = 0 ; i < SP_MAX ; ++i)
 	{
+		if (!ProgramDefinitions[i].bEnable)
+			continue;
+
+		std::cout << "creating program: " << i << std::endl;
 		auto& def = ProgramDefinitions[i];
 		GLuint shaderProgram = glCreateProgram();
 		glAttachShader(shaderProgram, Vs.GetShaderProgram(def.VertexShader));
