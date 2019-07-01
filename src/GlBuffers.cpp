@@ -12,7 +12,7 @@ GlBufferBase::~GlBufferBase()
 	glDeleteBuffers(1, &BufferId);
 }
 
-void GlBufferBase::InitData(void * data, size_t numBytes)
+void GlBufferBase::InitData(void * data, std::size_t numBytes)
 {
 	glBindBuffer(BufferType, BufferId);
 	glBufferData(BufferType, numBytes, data, GL_STATIC_DRAW);

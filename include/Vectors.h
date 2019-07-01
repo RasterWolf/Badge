@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 template<typename t>
 inline bool VectorElementCompare(const t& a, const t& b)
@@ -9,7 +10,7 @@ inline bool VectorElementCompare(const t& a, const t& b)
 template<>
 inline bool VectorElementCompare<float>(const float& a, const float& b)
 {
-	return abs(a-b) < 0.0001;
+	return std::abs(a-b) < 0.0001;
 }
 
 template<typename type>

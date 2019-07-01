@@ -5,7 +5,7 @@ struct GlVbAttrib
 {
 	unsigned int attribId;
 	int size;
-	size_t stride;
+	std::size_t stride;
 	void* offset;
 };
 
@@ -17,7 +17,7 @@ protected:
 	unsigned int BufferId;
 	unsigned int BufferType;
 public:
-	void InitData(void* data, size_t numBytes);
+	void InitData(void* data, std::size_t numBytes);
 	virtual void Bind() const;
 	virtual void Unbind() const;
 };
