@@ -145,7 +145,6 @@ ObjModel::ObjModel(const char * model)
 		for (auto& item : faces) 
 		{
 			ObjVert A, B, C;
-			int index[3];
 			A.Vert = verts[item.Verts.X];
 			B.Vert = verts[item.Verts.Y];
 			C.Vert = verts[item.Verts.Z];

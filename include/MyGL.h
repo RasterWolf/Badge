@@ -1,9 +1,6 @@
 ﻿#if defined(_MSC_VER)
 #define USE_GLEW 1
-#define SDL_MAIN_HANDLED
-#include <SDL2/SDL.h>
 #include <gl\glew.h>
-#include <SDL2/SDL_opengl.h>
 #include <gl\glu.h>
 #else
 #include "bcm_host.h"

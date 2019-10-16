@@ -1,6 +1,5 @@
 #include <iostream>
-#define SDL_MAIN_HANDLED
-#include <SDL2/SDL.h>
+#include "Platform.h"
 #include <time.h>
 #include "BadgeEngine.h"
 #include "MyGL.h"
@@ -26,61 +25,19 @@
 //}
 
 BadgeEngine GEngine;
-SDL_Window *window;
-
-void checkSDLError(int line = -1)
-{
-#ifndef NDEBUG
-	const char *error = SDL_GetError();
-	if (*error != '\0')
-	{
-		printf("SDL Error: %s\n", error);
-		if (line != -1)
-			printf(" + line: %i\n", line);
-		SDL_ClearError();
-	}
-#endif
-}
 
 void BadgeEngine::Initialize()
 {
 	srand((unsigned int)time(nullptr));
 
-	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
+	Platform::Init();
+	WindowSize = Platform::GetWindowSize();
 
-#if _MSC_VER
-	SDL_WindowFlags flags = SDL_WINDOW_OPENGL;
-	const glm::ivec2 WindowSize(480, 720);
-#else
-	unsigned int flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
-	const glm::ivec2 WindowSize(0, 0);
-#endif
-
-	window = SDL_CreateWindow(
-		"RasterBadge",					   // window title
-		SDL_WINDOWPOS_UNDEFINED,           // initial x position
-		SDL_WINDOWPOS_UNDEFINED,           // initial y position
-		WindowSize.x,                               // width, in pixels
-		WindowSize.y,                               // height, in pixels
-		flags                // flags - see below
-	);
-
-#if _MSC_VER
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-	SDL_GLContext glcontext = SDL_GL_CreateContext(window);
-	SDL_GetError();
-	GL_ASSERT;
-	SDL_GL_SetSwapInterval(1);
-	checkSDLError(__LINE__);
-#endif
-
-	SDL_GetWindowSize(window, &WindowWidth, &WindowHeight);
-
+	//Init Engine globals
 	GRenderPasses = new RenderPasses();
 	GRenderPasses->InitGL();
 
-	glViewport(0, 0, WindowWidth, WindowHeight);
+	glViewport(0, 0, WindowSize.X, WindowSize.Y);
 
 	std::cout << "Loading shaders..." << std::endl;
 	ShaderPrograms::InitShaderPrograms();
@@ -125,10 +82,10 @@ void BadgeEngine::Shutdown()
 		RunningProgram = nullptr;
 		
 		bIsInitialized = false;
-		SDL_DestroyWindow(window);
-		SDL_Quit();
+		
+		bIsExiting = true;
 
-		exit(0);
+		Platform::DeInit();
 	}
 	
 }
@@ -137,16 +94,20 @@ void BadgeEngine::MainLoop()
 {
 	assert(bIsInitialized);
 
-	while (true)
+#if __SWITCH__
+	while (!bIsExiting && appletMainLoop())
+#else
+	while (!bIsExiting)
+#endif
 	{
 		SDL_Event event;
 
-		while (SDL_PollEvent(&event))
+		while (Platform::PollEvent(&event))
 		{
 			if (event.type == SDL_MOUSEBUTTONUP)
 			{
-				float fx = event.button.x / (float)WindowWidth;
-				float fy = event.button.y / (float)WindowHeight;
+				float fx = event.button.x / (float)WindowSize.X;
+				float fy = event.button.y / (float)WindowSize.Y;
 				std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
 				HandleLeftClick(fx, fy);
 				//HandleLeftClick(0.14f, 0.46f);
@@ -156,8 +117,8 @@ void BadgeEngine::MainLoop()
 			{
 				if (event.tfinger.pressure >= 0.1)
 				{
-					float fx = event.tfinger.x / (float)WindowWidth;
-					float fy = event.tfinger.y / (float)WindowHeight;
+					float fx = event.tfinger.x / (float)WindowSize.X;
+					float fy = event.tfinger.y / (float)WindowSize.Y;
 					std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
 					HandleLeftClick(fx, fy);
 				}
@@ -186,11 +147,7 @@ void BadgeEngine::MainLoop()
 
 		if (InnerMainLoop(false))
 		{
-#if _MSC_VER
-			SDL_GL_SwapWindow(window);
-#else
-			GRenderPasses->SwapBuffers();
-#endif
+			Platform::SwapBuffers();
 			//std::cout << "draw" << std::endl;
 		}
 	}
@@ -226,17 +183,12 @@ void BadgeEngine::HandleKeyPress(unsigned char key, int x, int y)
 	}
 }
 
-float BadgeEngine::GetTimeSeconds() const
-{
-	return SDL_GetTicks() / 1000.0f;
-}
-
 bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 {
-	unsigned int Start = SDL_GetTicks();
+	float Start = Platform::GetTimeSeconds();
 	bool draw = bForceDraw;
 
-	bool bCheckBattery = LastBatteryCheck == 0 || ((Start - LastBatteryCheck) > 60 * 1000);
+	bool bCheckBattery = LastBatteryCheck == 0 || ((Start - LastBatteryCheck) > 60);
 	if (bCheckBattery)
 	{
 		if (GpioControls::CheckLowBattery())
@@ -274,16 +226,17 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 		}
 
 	}
-	uint32_t end = SDL_GetTicks();
-	auto diff = end - Start;
+
+	float end = Platform::GetTimeSeconds();
+	auto diff = (end - Start)*1000.0f; //diff in MS
 
 #if 0
 	if (diff > FrameTime)
 		std::cout << Start << " " << end << " " << diff << std::endl;
 #endif
-	if (diff < FrameTime)
+	if (diff < TickTime)
 	{
-		SDL_Delay(FrameTime - diff);
+		Platform::Delay(uint32_t(TickTime - diff));
 	}
 
 	return draw;

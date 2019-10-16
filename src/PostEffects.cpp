@@ -1,6 +1,7 @@
 #include "PostEffects.h"
 #include "RenderPasses.h"
 #include "BadgeEngine.h"
+#include "Platform.h"
 
 void BasePostEffect::SetProgram(BadgeProgram * prog)
 {
@@ -81,7 +82,7 @@ void STPostEffect::Render(float delta)
 
 		ShaderPrograms::SetProgram(programUsed);
 		if (timeParameter >= 0)
-			glUniform1f(timeParameter, GEngine.GetTimeSeconds());
+			glUniform1f(timeParameter, Platform::GetTimeSeconds());
 		if (resolutionParameter >= 0)
 			glUniform2f(resolutionParameter, (float)GEngine.GetWidth(), (float)GEngine.GetHeight());
 

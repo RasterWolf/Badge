@@ -54,10 +54,10 @@ public:
 	type Y;
 	type Z;
 
-	Vector3D(type _X, type _Y, type _Z) :
-		X(_X)
-		, Y(_Y)
-		, Z(_Z)
+	Vector3D(type _x, type _y, type _z) :
+		X(_x)
+		, Y(_y)
+		, Z(_z)
 	{
 		;
 	}

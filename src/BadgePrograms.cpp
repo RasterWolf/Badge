@@ -42,8 +42,8 @@ glm::vec2 RasterBadge::NoseMin = glm::vec2(0.14f, 0.46f);
 glm::vec2 RasterBadge::NoseSize = glm::vec2(0.19f, 0.1);
 
 RasterBadge::RasterBadge()
-	: ImageIndex(0),
-	model("Content\\Mesh.obj")
+	: model("Content\\Mesh.obj")
+	, ImageIndex(0)
 {
 	BadgeFrames[0] = TextureManager::GetTexture("RasterBadge.png");
 	BadgeFrames[1] = TextureManager::GetTexture("RasterBadge2.png");

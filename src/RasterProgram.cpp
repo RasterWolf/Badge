@@ -1,5 +1,6 @@
 #include "RasterProgram.h"
 #include "GpioControls.h"
+#include "BadgeEngine.h"
 
 //Main Badge Program
 
@@ -32,7 +33,11 @@ RasterProgram::RasterProgram() :
 
 RasterProgram::~RasterProgram()
 {
-	
+	for (auto * item : BadgePrograms.Programs)
+		delete item;
+
+	for (auto * item : PostPrograms.Programs)
+		delete item;
 }
 
 const float BrightnessValues[] = { 1.0,0.5f,0.4f,0.1f };
@@ -49,7 +54,7 @@ void RasterProgram::HandleClick(float x, float y)
 		{
 		case 0:
 			//SetPrograms(PostPrograms.GetCurrentProgram(),BadgePrograms.PreviousProgram());
-			exit(0);
+			GEngine.Shutdown();
 			break;
 		case 1:
 			//SetPrograms(PostPrograms.GetCurrentProgram(), BadgePrograms.AdvanceProgram());

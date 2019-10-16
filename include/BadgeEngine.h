@@ -2,6 +2,7 @@
 #include <cassert>
 #include "BadgePrograms.h"
 #include "RenderPasses.h"
+#include <Vectors.h>
 
 
 /// BadgeEngine takes the programs and runs them!
@@ -22,9 +23,8 @@ public:
 	void MainLoop();
 	void HandleLeftClick(float x, float y);
 	void HandleKeyPress(unsigned char key, int x, int y);
-	int GetWidth() const { return WindowWidth;  }
-	int GetHeight() const { return WindowHeight;  }
-	float GetTimeSeconds() const;
+	int GetWidth() const { return WindowSize.X;  }
+	int GetHeight() const { return WindowSize.Y;  }
 	const char* GetPath() const;
 
 	bool InnerMainLoop(bool bForceDraw);
@@ -34,11 +34,11 @@ public:
 	const float TickTime = 1000.0f / FPS;
 private:
 	bool bIsInitialized = false;
+	bool bIsExiting = false;
 	BadgeProgram* RunningProgram = nullptr;
-	unsigned int LastRenderTime = 0;
-	unsigned int LastBatteryCheck = 0;
-	int WindowWidth;
-	int WindowHeight;
+	float LastRenderTime = 0;
+	float LastBatteryCheck = 0;
+	IVector2D WindowSize;
 
 };
 

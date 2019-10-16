@@ -36,9 +36,9 @@ protected:
 	public:
 		~CycleProgram()
 		{
-			for (auto* item : Programs)
+			/*for (auto* item : Programs)
 				delete item;
-			Programs.empty();
+			Programs.empty();*/
 		}
 		std::vector<type*> Programs;
 		int CurrentProgramIndex = -1;

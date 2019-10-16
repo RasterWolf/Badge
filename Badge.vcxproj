@@ -171,6 +171,7 @@
     <ClCompile Include="src\BasicActors.cpp" />
     <ClCompile Include="src\GpioControls.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Platform.cpp" />
     <ClCompile Include="src\PostEffects.cpp" />
     <ClCompile Include="src\RasterProgram.cpp" />
     <ClCompile Include="src\RenderPasses.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="include\glmMath.h" />
     <ClInclude Include="include\GpioControls.h" />
     <ClInclude Include="include\MyGL.h" />
+    <ClInclude Include="include\Platform.h" />
     <ClInclude Include="include\PostEffects.h" />
     <ClInclude Include="include\RasterProgram.h" />
     <ClInclude Include="include\RenderPasses.h" />
