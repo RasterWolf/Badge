@@ -6,7 +6,7 @@
 const int BrightnessPin = 23;
 const int LowBatPin = 25;
 
-#if _MSC_VER
+#if _MSC_VER || __SWITCH__
 void GpioControls::InitGpioControls()
 {
 	std::cout << "GPIO Init called"<< std::endl;
