@@ -102,7 +102,7 @@ int STPostEffect::Render(float delta)
 		{
 			if (channelParameters[i] >= 0)
 			{
-				//glUniform1i(channelParameters[i], i);
+				glUniform1i(channelParameters[i], i);
 				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, channelParameterValues[i]);
 				GL_ASSERT;
