@@ -30,8 +30,8 @@ void BadgeEngine::Initialize()
 {
 	srand((unsigned int)time(nullptr));
 
-	Platform::Init();
-	WindowSize = Platform::GetWindowSize();
+	GPlatform.Init();
+	IVector2D WindowSize = GPlatform.GetWindowSize();
 
 	//Init Engine globals
 	GRenderPasses = new RenderPasses();
@@ -58,14 +58,8 @@ void BadgeEngine::Initialize()
 
 	GpioControls::InitGpioControls();
 
-#if !defined(_MSC_VER)
-	char* path = const_cast<char*>(&AppPath[0]);
-	getcwd(path, 512);
-	std::cout << path << std::endl;
-#endif
-
-
 	bIsInitialized = true;
+	std::cout << "WindowSize: " << WindowSize.X << "x" << WindowSize.Y << std::endl;
 }
 
 void BadgeEngine::Shutdown()
@@ -85,7 +79,7 @@ void BadgeEngine::Shutdown()
 		
 		bIsExiting = true;
 
-		Platform::DeInit();
+		GPlatform.DeInit();
 	}
 	
 }
@@ -94,20 +88,18 @@ void BadgeEngine::MainLoop()
 {
 	assert(bIsInitialized);
 
-#if __SWITCH__
-	while (!bIsExiting && appletMainLoop())
-#else
-	while (!bIsExiting)
-#endif
+	while (!bIsExiting && !GPlatform.PlatformRequestingExit())
 	{
+		GPlatform.ScanInput(); 
+
 		SDL_Event event;
 
-		while (Platform::PollEvent(&event))
+		while (GPlatform.PollEvent(&event))
 		{
 			if (event.type == SDL_MOUSEBUTTONUP)
 			{
-				float fx = event.button.x / (float)WindowSize.X;
-				float fy = event.button.y / (float)WindowSize.Y;
+				float fx = event.button.x / (float)GetWidth();
+				float fy = event.button.y / (float)GetHeight();
 				std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
 				HandleLeftClick(fx, fy);
 				//HandleLeftClick(0.14f, 0.46f);
@@ -117,14 +109,13 @@ void BadgeEngine::MainLoop()
 			{
 				if (event.tfinger.pressure >= 0.1)
 				{
-					float fx = event.tfinger.x / (float)WindowSize.X;
-					float fy = event.tfinger.y / (float)WindowSize.Y;
+					float fx = event.tfinger.x / (float)GetWidth();
+					float fy = event.tfinger.y / (float)GetHeight();
 					std::cout << "mouse clicked: " << fx << "x" << fy << std::endl;
 					HandleLeftClick(fx, fy);
 				}
-				
-			}
 
+			}
 
 			if (event.type == SDL_KEYDOWN && event.key.state == SDL_PRESSED && event.key.repeat == 0)
 			{
@@ -137,9 +128,10 @@ void BadgeEngine::MainLoop()
 			{
 				return;
 			}
-		
+
 		}
 
+		
 		if (!bIsInitialized)
 		{
 			return;
@@ -147,7 +139,7 @@ void BadgeEngine::MainLoop()
 
 		if (InnerMainLoop(false))
 		{
-			Platform::SwapBuffers();
+			GPlatform.SwapBuffers();
 			//std::cout << "draw" << std::endl;
 		}
 	}
@@ -185,7 +177,7 @@ void BadgeEngine::HandleKeyPress(unsigned char key, int x, int y)
 
 bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 {
-	float Start = Platform::GetTimeSeconds();
+	float Start = GPlatform.GetTimeSeconds();
 	bool draw = bForceDraw;
 
 	bool bCheckBattery = LastBatteryCheck == 0 || ((Start - LastBatteryCheck) > 60);
@@ -227,7 +219,7 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 
 	}
 
-	float end = Platform::GetTimeSeconds();
+	float end = GPlatform.GetTimeSeconds();
 	auto diff = (end - Start)*1000.0f; //diff in MS
 
 #if 0
@@ -236,7 +228,7 @@ bool BadgeEngine::InnerMainLoop(bool bForceDraw)
 #endif
 	if (diff < TickTime)
 	{
-		Platform::Delay(uint32_t(TickTime - diff));
+		GPlatform.Delay(uint32_t(TickTime - diff));
 	}
 
 	return draw;

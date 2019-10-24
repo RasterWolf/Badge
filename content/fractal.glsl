@@ -2,12 +2,13 @@
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
 // antialiasing (squared)
-
+#version 330 core
+precision highp float;
 uniform float iTime;
 uniform vec2 iResolution;
 //uniform sampler2D iChannel0;
 //uniform sampler2D iChannel1;
-varying vec2 TexCoord;
+in vec2 TexCoord;
 
 // Created by inigo quilez - iq/2013
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.

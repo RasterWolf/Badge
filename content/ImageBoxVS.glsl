@@ -1,10 +1,9 @@
-//#version 100
-//in int gl_VertexID;
+#version 330 core
 
-attribute vec3 aPos;
-attribute vec2 aTexCoord;
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
 
-varying vec2 TexCoord;
+out vec2 TexCoord;
 
 uniform mat4 Transform;
 uniform mat4 Projection;

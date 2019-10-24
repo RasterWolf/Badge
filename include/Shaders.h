@@ -17,6 +17,7 @@ enum ShaderProgram
 	SP_Sketch,
 	SP_Sketch2,
 	SP_Fractal,
+	SP_Mosiac,
 	SP_MAX
 };
 
@@ -24,11 +25,22 @@ template<typename pipeline, int MaxShaders>
 class Shaders
 {
 public:
+	Shaders()
+	{
+		memset(ShaderPrograms, 0, sizeof(GLuint)*MaxShaders);
+	}
+
 	void InitShaders()
 	{
 		for (size_t i = 0; i < (size_t)pipeline::GetMaxShaders(); i++)
 		{
 			GLuint shader = glCreateShader(pipeline::GetShaderPipeline());
+
+			if (!shader)
+			{
+				std::cout << "Failed to create GL shader Id " << std::endl;
+				continue;
+			}
 
 			//Read the file
 			std::ifstream file;
@@ -43,6 +55,10 @@ public:
 			{
 				std::cout << "Couldn't open file: " << ShaderFiles[i].c_str() << std::endl;
 				continue;
+			}
+			else
+			{
+				std::cout << "Opened file: " << ShaderFiles[i].c_str() << std::endl;
 			}
 
 			file.seekg(0,file.end);
@@ -77,7 +93,10 @@ public:
 	{
 		for (size_t i = 0; i < MaxShaders; i++)
 		{
-			glDeleteShader(ShaderPrograms[i]);
+			if (ShaderPrograms[i])
+			{
+				glDeleteShader(ShaderPrograms[i]);
+			}
 		}
 	}
 
@@ -137,6 +156,7 @@ enum FragmentShaderProgram
 	FS_Sketch,
 	FS_Sketch2,
 	FS_Fractal,
+	FS_Mosiac,
 	FS_MAX
 };
 
@@ -154,6 +174,7 @@ public:
 		ShaderFiles[FS_Sketch] = "Sketch.glsl";
 		ShaderFiles[FS_Sketch2] = "Sketch2.glsl";
 		ShaderFiles[FS_Fractal] = "fractal.glsl";
+		ShaderFiles[FS_Mosiac] = "MosiacFS.glsl";
 
 	}
 	static constexpr GLenum GetShaderPipeline() 

@@ -14,8 +14,13 @@ std::map<std::string,BadgeImage> LoadedTextures;
 BadgeImage ReadTextureFromFile(const char* file)
 {
 	BadgeImage res;
+#if __SWITCH__
+	FILE* f = fopen(file, "rb");
+	SDL_RWops *rw = SDL_RWFromFP(f, SDL_TRUE);
+	SDL_Surface* originalSurface = IMG_Load_RW(rw,1);
+#else
 	SDL_Surface* originalSurface = IMG_Load(file);
-
+#endif
 
 	if (!originalSurface)
 	{

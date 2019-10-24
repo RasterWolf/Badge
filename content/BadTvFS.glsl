@@ -1,11 +1,10 @@
-#version 100
-precision mediump float;
+#version 330 core
 
 uniform float iTime;
 uniform ivec2 iResolution;
 uniform sampler2D iChannel0;
 
-varying vec2 TexCoord;
+in vec2 TexCoord;
 
 float random(in float a, in float b) { return fract((cos(dot(vec2(a,b) ,vec2(12.9898,78.233))) * 43758.5453)); }
 

@@ -18,14 +18,15 @@
 	Previous work:
 	https://www.shadertoy.com/view/XtVGD1 - the grandaddy of all sketch shaders, by flockaroo
 */
-#version 100
+#version 330 core
+
 precision mediump float;
 
 uniform float iTime;
 uniform vec2 iResolution;
 uniform sampler2D iChannel0;
 //uniform sampler2D iChannel1;
-varying vec2 TexCoord;
+in vec2 TexCoord;
 
 #define PI2 6.28318530717959
 

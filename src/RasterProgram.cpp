@@ -22,6 +22,7 @@ RasterProgram::RasterProgram() :
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Sketch));
 	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Sketch2));
 	//PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Fractal));
+	PostPrograms.Programs.push_back(new STPostEffect(ShaderProgram::SP_Mosiac));
 
 
 	auto* program = BadgePrograms.AdvanceProgram();
@@ -29,6 +30,7 @@ RasterProgram::RasterProgram() :
 
 	CurrentProgram = post;
 	post->SetProgram(program);
+
 }
 
 RasterProgram::~RasterProgram()
@@ -38,6 +40,7 @@ RasterProgram::~RasterProgram()
 
 	for (auto * item : PostPrograms.Programs)
 		delete item;
+
 }
 
 const float BrightnessValues[] = { 1.0,0.5f,0.4f,0.1f };
@@ -82,9 +85,22 @@ void RasterProgram::HandleKeyPress(unsigned char key)
 	CurrentProgram->HandleKeyPress(key);
 }
 
-void RasterProgram::Render(float delta)
+int RasterProgram::Render(float delta)
 {
-	CurrentProgram->Render(delta);
+	//Set the app viewport
+	glViewport(0, 0, GEngine.GetAppWidth(), GEngine.GetAppHeight());
+	int resource = CurrentProgram->Render(delta);
+
+	//transform and draw
+	glViewport(0, 0, GEngine.GetWidth(), GEngine.GetHeight());
+	glm::mat4 m(1.0f);
+	m = glm::scale(m, glm::vec3(1.0f, -1.0f, 1.0f));
+	m = glm::rotate(m, DegToRad(90.0f), glm::vec3(0, 0, 1.f));
+	SCOPE_TRANSFORM(m);
+	GRenderPasses->SetRenderTarget(nullptr);
+	GRenderPasses->RenderFullScreen(resource);
+
+	return 0;
 }
 
 bool RasterProgram::Integrate(float delta)

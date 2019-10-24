@@ -42,6 +42,7 @@ UnitCubeGeo::UnitCubeGeo()
 {
 	unsigned int PositionAttrib = ShaderPrograms::GetVertexAttrib(ShaderProgram::SP_FullScreen, "aPos");
 	unsigned int TexAttrib = ShaderPrograms::GetVertexAttrib(ShaderProgram::SP_FullScreen, "aTexCoord");
+	GL_ASSERT;
 
 	std::cout << "Creating Unit Cube with Pos in: " << PositionAttrib << std::endl;
 	std::cout << "Creating Unit Cube with tex in: " << TexAttrib << std::endl;
@@ -59,6 +60,8 @@ UnitCubeGeo::UnitCubeGeo()
 	VertexBuffer.AddAttrib(Atrribs[1]);
 
 	IndexBuffer.InitData(indices, sizeof(indices));
+	GL_ASSERT;
+
 }
 
 UnitCubeGeo::~UnitCubeGeo()
@@ -68,15 +71,18 @@ UnitCubeGeo::~UnitCubeGeo()
 void UnitCubeGeo::Draw(bool bInvert) const
 {
 	VertexBuffer.Bind();
+	GL_ASSERT;
 	IndexBuffer.Bind();
+	GL_ASSERT;
 
 	if (!bInvert)
 	{
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+		GL_ASSERT;
 	}
 	else
 	{
 		glDrawArrays(GL_TRIANGLE_STRIP, 6, 6);
-
+		GL_ASSERT;
 	}
 }

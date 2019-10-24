@@ -15,7 +15,8 @@ ImageActor::ImageActor(const std::string& image)
 
 void ImageActor::Render()
 {
-	GRenderPasses->RenderImageBox(Image, ApplyTransform(),true);
+	SCOPE_TRANSFORM(ApplyTransform());
+	GRenderPasses->RenderImageBox(Image,true);
 }
 
 glm::mat4 ImageActor::ApplyTransform() const

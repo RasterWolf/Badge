@@ -5,7 +5,9 @@
 
 RenderTargetFlipFlop* GRenderTargets;
 
-RenderTarget::RenderTarget(int SizeX, int SizeY)
+RenderTarget::RenderTarget(int InSizeX, int InSizeY)
+	: SizeX(InSizeX)
+	, SizeY(InSizeY)
 {
 	glGenTextures(1, &ShaderResourceId);
 	GL_ASSERT;
@@ -36,8 +38,8 @@ RenderTarget::~RenderTarget()
 RenderTargetFlipFlop::RenderTargetFlipFlop()
 {
 	RtIndex = 0;
-	SceneTargets[0] = new RenderTarget(GEngine.GetWidth(), GEngine.GetHeight());
-	SceneTargets[1] = new RenderTarget(GEngine.GetWidth(), GEngine.GetHeight());
+	SceneTargets[0] = new RenderTarget(GEngine.GetAppWidth(), GEngine.GetAppHeight());
+	SceneTargets[1] = new RenderTarget(GEngine.GetAppWidth(), GEngine.GetAppHeight());
 }
 
 RenderTargetFlipFlop::~RenderTargetFlipFlop()

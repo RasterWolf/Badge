@@ -2,6 +2,7 @@
 #include "RenderPasses.h"
 #include "TextureManager.h"
 #include "Constant.h"
+#include "Shaders.h"
 #include <cstdlib>
 
 auto lerp = [](float v0, float v1, float t) {
@@ -13,9 +14,10 @@ BasicBadge::BasicBadge(const std::string backgroundImage)
 	BackgroundTexture = TextureManager::GetTexture(backgroundImage.c_str());
 }
 
-void BasicBadge::Render(float delta)
+int BasicBadge::Render(float delta)
 {
 	GRenderPasses->RenderFullScreen(BackgroundTexture);
+	return 0;
 }
 
 void TempImageActor::Init(const glm::vec2& pos)
@@ -75,19 +77,23 @@ void RasterBadge::HandleClick(float x, float y)
 			ry = lerp(HalfY, SIZE_Y - HalfY, ry);
 
 			bp->Init(glm::vec2(rx, ry));
-			bp->Scale.x = 0.5f;
+			//bp->Scale.x = 0.5f;
 			bp->Scale.y = 0.5f;
+			//bp->Rotation = DegToRad(-90.0f);
 		}
 	}
 }
 
-void RasterBadge::Render(float delta)
+int RasterBadge::Render(float delta)
 {
+	ShaderPrograms::SetProgram(SP_FullScreen);
 	GRenderPasses->RenderFullScreen(BadgeFrames[tiComponent.HasActors()?1:0]);
 	
 	//GRenderPasses->RenderObj(*model.objModel, BadgeFrames[0], model.ApplyTransform());
 
 	tiComponent.Render(delta);
+
+	return 0;
 }
 
 bool RasterBadge::Integrate(float delta) 
@@ -135,10 +141,11 @@ void PulexBadge::HandleClick(float x, float y)
 	//special if there isn't a boop actor ?
 }
 
-void PulexBadge::Render(float delta)
+int PulexBadge::Render(float delta)
 {
 	GRenderPasses->RenderFullScreen(Background);
 	tiComponent.Render(delta);
+	return 0;
 }
 
 bool PulexBadge::Integrate(float delta)
@@ -148,5 +155,6 @@ bool PulexBadge::Integrate(float delta)
 
 void HeartActor::Render()
 {
-	GRenderPasses->RenderImageBox(Image, ApplyTransform(), true, color);
+	SCOPE_TRANSFORM(ApplyTransform());
+	GRenderPasses->RenderImageBox(Image, true, color);
 }

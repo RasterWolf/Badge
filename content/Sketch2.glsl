@@ -3,14 +3,14 @@
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
 // trying to resemle some hand drawing style
-#version 100
-precision mediump float;
+#version 330 core
+precision highp float;
 
 uniform float iTime;
 uniform vec2 iResolution;
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
-varying vec2 TexCoord;
+in vec2 TexCoord;
 
 #define Res  iResolution.xy
 
@@ -131,7 +131,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 karo=vec3(1);
     karo-=.75755*vec3(.25,.1,.1)*dot(exp(-s*s*80.),vec2(1.));
     float r=length(pos-iResolution.xy*.5)/iResolution.x;
-    float vign=1.-r*r*r;
+    float vign=1.-r*r*r*0.5;
 	fragColor = vec4(vec3(col.x*col2*karo*vign ),1);
     vec4 origCol = texture2D(iChannel0, gl_FragCoord.xy/iResolution.xy);
     vec4 overlayColor = vec4(0.9,0.9,0.9,0.0)*origCol;

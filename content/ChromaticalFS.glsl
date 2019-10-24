@@ -1,11 +1,12 @@
-#version 100
+#version 330 core
 precision mediump float;
 
 uniform float iTime;
 uniform ivec2 iResolution;
 uniform sampler2D iChannel0;
 
-varying vec2 TexCoord;
+in vec2 TexCoord;
+
 
 //ShaderToy
 

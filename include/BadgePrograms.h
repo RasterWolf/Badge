@@ -13,7 +13,7 @@ public:
 	virtual ~BadgeProgram() { ; }
 	virtual void HandleClick(float x, float y) { ; }
 	virtual void HandleKeyPress(unsigned char key) {;}
-	virtual void Render(float delta)=0;
+	virtual int Render(float delta)=0;
 	virtual bool Integrate(float delta){ return false;}
 };
 
@@ -26,7 +26,7 @@ public:
 	{ 
 		return BadgeProgram::Integrate(delta);
 	}
-	void Render(float delta) override;
+	int Render(float delta) override;
 private:
 	BadgeImage BackgroundTexture;
 };
@@ -132,7 +132,7 @@ public:
 	RasterBadge();
 	~RasterBadge() { ; }
 	void HandleClick(float x, float y) override;
-	void Render(float delta) override;
+	int Render(float delta) override;
 	bool Integrate(float delta) override;
 private:
 	static glm::vec2 NoseMin;
@@ -169,7 +169,7 @@ public:
 	}
 	~PulexBadge() { ; }
 	void HandleClick(float x, float y) override;
-	void Render(float delta) override;
+	int Render(float delta) override;
 	bool Integrate(float delta) override;
 private:
 	static glm::vec2 HeartMin;

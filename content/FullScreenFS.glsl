@@ -1,6 +1,7 @@
-//#version 100
+#version 330 core
 //precision mediump float;
-varying vec2 TexCoord;
+in vec2 TexCoord;
+
 
 uniform sampler2D ourTexture;
 

@@ -9,6 +9,21 @@
 
 RenderPasses* GRenderPasses = nullptr;
 
+RenderPasses::RenderPasses()
+{
+	matrixStack.emplace(glm::mat4(1.0f));
+}
+
+void RenderPasses::PushMatrix(const glm::mat4& mat)
+{
+	matrixStack.emplace(mat*matrixStack.top());
+}
+
+void RenderPasses::PopMatrix()
+{
+	matrixStack.pop();
+}
+
 void RenderPasses::SetRenderTarget(const RenderTarget * rt)
 {
 	if (rt)
@@ -24,7 +39,12 @@ void RenderPasses::RenderFullScreen(const BadgeImage& Texture)
 
 void RenderPasses::RenderFullScreen(unsigned int Texture)
 {
-	ShaderPrograms::SetProgram(SP_FullScreen);
+	auto programid = ShaderPrograms::SetProgram(SP_FullScreen);
+		
+	static GLuint ProjectionMatrixId = glGetUniformLocation(programid, "ObjectMat");
+	glUniformMatrix4fv(ProjectionMatrixId, 1, GL_FALSE, glm::value_ptr(matrixStack.top()));
+
+
 	GL_ASSERT;
 	glBindTexture(GL_TEXTURE_2D, Texture);
 	GL_ASSERT;
@@ -42,18 +62,19 @@ void RenderPasses::RenderFullScreenInverted(unsigned int Texture)
 	GL_ASSERT;
 }
 
-void RenderPasses::RenderImageBox(const BadgeImage& Texture, const glm::mat4& ObjectMatrix, bool EnableAlpha, const glm::vec3& colorMod)
+void RenderPasses::RenderImageBox(const BadgeImage& Texture, bool EnableAlpha, const glm::vec3& colorMod)
 {
 	auto programid = ShaderPrograms::SetProgram(SP_ImageBox);
 
 	glm::mat4 ViewProjection = glm::ortho(0.0f,(float)SIZE_X,0.0f,(float)SIZE_Y,0.1f,100.0f); //TODO
 	ViewProjection = glm::translate(ViewProjection,glm::vec3(0.0f,0.0f,-1.0f));
+	//ViewProjection = glm::rotate(ViewProjection, DegToRad(90.0f), glm::vec3(0, 0, 1.0f));
 
 	static GLuint ObjectMatrixId = glGetUniformLocation(programid, "Transform");
 	static GLuint ProjectionMatrixId = glGetUniformLocation(programid, "Projection");
 	static GLuint colorModId = glGetUniformLocation(programid, "ColorMod");
 
-	glUniformMatrix4fv(ObjectMatrixId, 1, GL_FALSE, glm::value_ptr(ObjectMatrix));
+	glUniformMatrix4fv(ObjectMatrixId, 1, GL_FALSE, glm::value_ptr(matrixStack.top()));
 	glUniformMatrix4fv(ProjectionMatrixId, 1, GL_FALSE, glm::value_ptr(ViewProjection));
 	glUniform3f(colorModId, colorMod.x, colorMod.y, colorMod.z);
 
@@ -149,41 +170,6 @@ void RenderPasses::SwapBuffers()
 #else
 #include <unistd.h>
 #define TRACE(fmt,...) printf("%s: " fmt "\n", __PRETTY_FUNCTION__, ## __VA_ARGS__)
-
-static int s_nxlinkSock = -1;
-
-static void initNxLink()
-{
-	if (R_FAILED(socketInitializeDefault()))
-		return;
-
-	s_nxlinkSock = nxlinkStdio();
-	if (s_nxlinkSock >= 0)
-		TRACE("printf output now goes to nxlink server");
-	else
-		socketExit();
-}
-
-static void deinitNxLink()
-{
-	if (s_nxlinkSock >= 0)
-	{
-		close(s_nxlinkSock);
-		socketExit();
-		s_nxlinkSock = -1;
-	}
-}
-
-extern "C" void userAppInit()
-{
-	initNxLink();
-}
-
-extern "C" void userAppExit()
-{
-	deinitNxLink();
-}
-
 #endif
 
 
@@ -191,10 +177,33 @@ static EGLDisplay s_display;
 static EGLContext s_context;
 static EGLSurface s_surface;
 
+#define CASE_STR( value ) case value: return #value; 
+const char* eglGetErrorString(EGLint error)
+{
+	switch (error)
+	{
+		CASE_STR(EGL_SUCCESS)
+			CASE_STR(EGL_NOT_INITIALIZED)
+			CASE_STR(EGL_BAD_ACCESS)
+			CASE_STR(EGL_BAD_ALLOC)
+			CASE_STR(EGL_BAD_ATTRIBUTE)
+			CASE_STR(EGL_BAD_CONTEXT)
+			CASE_STR(EGL_BAD_CONFIG)
+			CASE_STR(EGL_BAD_CURRENT_SURFACE)
+			CASE_STR(EGL_BAD_DISPLAY)
+			CASE_STR(EGL_BAD_SURFACE)
+			CASE_STR(EGL_BAD_MATCH)
+			CASE_STR(EGL_BAD_PARAMETER)
+			CASE_STR(EGL_BAD_NATIVE_PIXMAP)
+			CASE_STR(EGL_BAD_NATIVE_WINDOW)
+			CASE_STR(EGL_CONTEXT_LOST)
+	default: return "Unknown";
+	}
+}
+#undef CASE_STR
+
 void RenderPasses::InitGL()
 {
-	//initNxLink();
-
 	NWindow* win = nwindowGetDefault();
 
 	// Connect to the EGL default display
@@ -228,7 +237,7 @@ void RenderPasses::InitGL()
 		EGL_DEPTH_SIZE,   24,
 		EGL_STENCIL_SIZE, 8,
 		EGL_NONE
-	};
+	}; 
 	eglChooseConfig(s_display, framebufferAttributeList, &config, 1, &numConfigs);
 	if (numConfigs == 0)
 	{
@@ -236,7 +245,7 @@ void RenderPasses::InitGL()
 		goto _fail1;
 	}
 
-	// Create an EGL window surface
+	// Create an EGL window surface 
 	s_surface = eglCreateWindowSurface(s_display, config, win, nullptr);
 	if (!s_surface)
 	{
@@ -261,13 +270,13 @@ void RenderPasses::InitGL()
 
 	// Connect the context to the surface
 	eglMakeCurrent(s_display, s_surface, s_surface, s_context);
-	
-	
+
 	gladLoadGL();
 
-	return;
-	//return true;
+	std::cout << glGetString(GL_RENDERER) << std::endl;
+	std::cout << glGetString(GL_VERSION) << std::endl;
 
+	return;
 
 _fail2:
 	eglDestroySurface(s_display, s_surface);
@@ -277,10 +286,6 @@ _fail1:
 	s_display = nullptr;
 _fail0:
 	return;
-	//return false;
-
-
-
 }
 
 void RenderPasses::DestroyGL()

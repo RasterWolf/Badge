@@ -79,7 +79,7 @@ GlIndexBuffer::~GlIndexBuffer()
 	;
 }
 
-#if _MSC_VER
+#if _MSC_VER || __SWITCH__
 
 //GL VAO
 GlVertexBufferNext::GlVertexBufferNext()

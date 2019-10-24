@@ -11,7 +11,7 @@ public:
 
 	virtual void HandleClick(float x, float y) override;
 	virtual void HandleKeyPress(unsigned char key) override;
-	virtual void Render(float delta) override;
+	virtual int Render(float delta) override;
 	virtual bool Integrate(float delta) override;
 
 	void SetPrograms(BasePostEffect* post, BadgeProgram* program)

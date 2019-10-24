@@ -157,6 +157,7 @@
     <None Include="content\FullScreenVS.glsl" />
     <None Include="content\ImageBoxFS.glsl" />
     <None Include="content\ImageBoxVS.glsl" />
+    <None Include="content\MosiacFS.glsl" />
     <None Include="content\Sketch.glsl" />
     <None Include="content\Sketch2.glsl" />
     <None Include="content\TvDistortion.glsl" />

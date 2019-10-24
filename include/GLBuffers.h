@@ -35,7 +35,7 @@ public:
 protected:
 	std::vector<GlVbAttrib> VertexBufferAttribs;
 };
-#if _MSC_VER
+#if _MSC_VER || __SWITCH__
 //VBO and VAO for GL 4.5
 class GlVertexBufferNext : public GlVertexBufferBase
 {

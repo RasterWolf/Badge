@@ -25,7 +25,8 @@ void ShaderPrograms::InitShaderPrograms()
 	{ FS_GreenTV,VS_FullScreen,true },
 	{ FS_Sketch, VS_FullScreen ,true}
 	,{ FS_Sketch2, VS_FullScreen,true }
-	,{ FS_Fractal, VS_FullScreen,false } //this fractal shader is killing the compiler on the pi.
+	,{ FS_Fractal, VS_FullScreen,true } //this fractal shader is killing the compiler on the pi.
+	,{ FS_Mosiac, VS_FullScreen,true }
 	};
 
 	for(int i = 0 ; i < SP_MAX ; ++i)
@@ -49,10 +50,33 @@ void ShaderPrograms::InitShaderPrograms()
 			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 			//if(infoLog[0])
 			std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED " << success << " " << shaderProgram <<  "\n" << infoLog << std::endl;
-		    
+		}
+		else
+		{
+			std::cout << "Linked Programs: " << i << std::endl;
 		}
 
 		AllShaderPrograms[i] = shaderProgram;
+
+		//useful for shader debugging
+#if 0
+		GLint numUniforms;
+		glGetProgramiv(shaderProgram, GL_ACTIVE_UNIFORMS, &numUniforms);
+		{
+			printf("numUniforms:%d\n", numUniforms);
+			for (size_t i = 0; i < numUniforms; i++)
+			{
+				GLchar buffer[512];
+				GLsizei len;
+				GLenum type;
+				GLint size;
+				glGetActiveUniform(programid, i, 512, &len, &size, &type, buffer);
+				printf("%s\n", buffer);
+			}
+		}
+
+		printf("id:%dx%dx%dx%d\n", programid, ObjectMatrixId, ProjectionMatrixId, colorModId);
+#endif
 
 	}
 }

@@ -2,6 +2,7 @@
 #include <cassert>
 #include "BadgePrograms.h"
 #include "RenderPasses.h"
+#include "Platform.h"
 #include <Vectors.h>
 
 
@@ -23,8 +24,10 @@ public:
 	void MainLoop();
 	void HandleLeftClick(float x, float y);
 	void HandleKeyPress(unsigned char key, int x, int y);
-	int GetWidth() const { return WindowSize.X;  }
-	int GetHeight() const { return WindowSize.Y;  }
+	int GetWidth() const { return GPlatform.GetWindowSize().X;  }
+	int GetHeight() const { return GPlatform.GetWindowSize().Y;  }
+	int GetAppWidth() const { return GPlatform.GetAppSize().X; }
+	int GetAppHeight() const { return GPlatform.GetAppSize().Y; }
 	const char* GetPath() const;
 
 	bool InnerMainLoop(bool bForceDraw);
@@ -38,8 +41,6 @@ private:
 	BadgeProgram* RunningProgram = nullptr;
 	float LastRenderTime = 0;
 	float LastBatteryCheck = 0;
-	IVector2D WindowSize;
-
 };
 
 extern BadgeEngine GEngine;
