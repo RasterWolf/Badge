@@ -1,4 +1,5 @@
 ﻿#include "TextureManager.h"
+#include "Platform.h"
 #include <map>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -72,8 +73,8 @@ BadgeImage ReadTextureFromFile(const char* file)
 
 void TextureManager::InitTextureManager()
 {
-	char Dir[512] = { 0 };
-	sprintf(Dir, "%s%s", AppPath, "content/");
+	char Dir[128] = { 0 };
+	sprintf(Dir, "%s%s", GPlatform.GetAppPath(), "content/");
 	DIR *dir = opendir (Dir);
 	char FullFileName[512] = { 0 };
 	struct dirent *ent;
@@ -81,7 +82,6 @@ void TextureManager::InitTextureManager()
 	{
 	  while ((ent = readdir (dir)) != nullptr) 
 	  {
-	  	int len = strlen(ent->d_name);
 	  	std::string fileName(ent->d_name);
 	  	std::transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
 	  	bool IsImageFile = fileName.find(".png") != std::string::npos 
@@ -115,6 +115,6 @@ const BadgeImage& TextureManager::GetTexture(const std::string& file)
     if(search != LoadedTextures.end()) {
     	return search->second;
     };
-
-    return BadgeImage(); //intentional, go to max
+	static BadgeImage DUMMY;
+    return DUMMY;
 }

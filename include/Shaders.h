@@ -5,6 +5,7 @@
 
 #include "MyGL.h"
 #include "Constant.h"
+#include "Platform.h"
 
 
 enum ShaderProgram
@@ -45,7 +46,7 @@ public:
 			//Read the file
 			std::ifstream file;
 			char FilePath[512] = { 0 };
-			sprintf(FilePath, "%s%s%s", AppPath,"content/", ShaderFiles[i].c_str());
+			sprintf(FilePath, "%s%s%s", GPlatform.GetAppPath(),"content/", ShaderFiles[i].c_str());
 
 			file.open(FilePath, std::ifstream::in);
 

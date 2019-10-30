@@ -124,8 +124,8 @@ int RasterProgram::UpdateInvisibleButtonClick(float x, float y)
 		glm::vec4(XLimit,0,1.f,ButtonSize),
 		glm::vec4(0,YLimit,ButtonSize,1.f),
 		glm::vec4(XLimit,YLimit,1.f,1.f) };
-
-	for (int i = 0; i < sizeof(ButtonLocations) / sizeof(ButtonLocations[0]); i++)
+	int limit = (int)(sizeof(ButtonLocations) / sizeof(ButtonLocations[0]));
+	for (int i = 0; i < limit; i++)
 	{
 		const auto& item = ButtonLocations[i];
 		if ((x >= item.x && x <= item.z) &&

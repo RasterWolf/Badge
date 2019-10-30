@@ -154,7 +154,7 @@ ObjModel::ObjModel(const char * model)
 			C.UV = UVs[item.UVs.Z];
 
 			auto FindOrAddVert = [&](const ObjVert& item) {
-				for (unsigned int i = 0; i < (int)vertexBuffer.size(); i++)
+				for (unsigned int i = 0; i < (unsigned int)vertexBuffer.size(); i++)
 				{
 					if (vertexBuffer[i] == item)
 					{

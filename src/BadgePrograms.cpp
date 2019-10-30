@@ -51,7 +51,7 @@ RasterBadge::RasterBadge()
 	BadgeFrames[1] = TextureManager::GetTexture("RasterBadge2.png");
 
 	//model setup;
-	const float scale = 100.5f;
+	//const float scale = 100.5f;
 	model.Rotation = 90.0f;
 	model.Scale = glm::vec3(-109.0f, 96.5f, 1.0f);
 	model.Position.x = SIZE_X * 0.5f;

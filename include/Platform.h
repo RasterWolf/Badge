@@ -3,6 +3,7 @@
 #include "Constant.h"
 #define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
+#include <string>
 
 class PlatformBase
 {
@@ -20,10 +21,18 @@ public:
 	{
 		return bRequestExit;
 	}
+	const char* GetAppPath() const
+	{
+		return appPath.c_str();
+	}
+
+private:
+	std::string appPath;
 
 protected:
-	PlatformBase(uint32_t InSDLInitFlags, SDL_WindowFlags InSDLWindoFlags, bool InCreateWindow)
-		: WindowSize(IVector2D(SIZE_X,SIZE_Y))
+	PlatformBase(uint32_t InSDLInitFlags, SDL_WindowFlags InSDLWindoFlags, bool InCreateWindow, const std::string& path)
+		: appPath(path)
+		, WindowSize(IVector2D(SIZE_X,SIZE_Y))
 		, AppSize(IVector2D(APP_SIZE_X,APP_SIZE_Y))
 		, SDLInitFlags(InSDLInitFlags)
 		, SDLWindowFlags(InSDLWindoFlags)
@@ -49,7 +58,7 @@ class WindowsPlatform : public PlatformBase
 public:
 	void SwapBuffers();
 	WindowsPlatform()
-		: PlatformBase(SDL_INIT_TIMER|SDL_INIT_VIDEO,SDL_WINDOW_OPENGL,true)
+		: PlatformBase(SDL_INIT_TIMER|SDL_INIT_VIDEO,SDL_WINDOW_OPENGL,true,"./")
 	{
 		;
 	}
@@ -63,7 +72,7 @@ class SwitchPlatform : public PlatformBase
 {
 public:
 	SwitchPlatform()
-		: PlatformBase(SDL_INIT_TIMER, SDL_WindowFlags(0U), false)
+		: PlatformBase(SDL_INIT_TIMER, SDL_WindowFlags(0U), false,"romfs:/")
 		, s_nxlinkSock(-1)
 	{
 		;
